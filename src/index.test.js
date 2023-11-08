@@ -28,5 +28,30 @@ describe('Ship class', () => {
 })
 
 describe('Gameboard class', () => {
-  
+  let gameboard
+  let shipOne
+  let shipOneCoordinates
+
+  beforeEach(() => {
+    gameboard = new Gameboard
+    shipOne = new Ship(3)
+    shipOneCoordinates = [{x: 1, y: 2}, {x: 1, y: 3}, {x: 1, y: 4}]
+    gameboard.placeShip(shipOne, shipOneCoordinates)
+  })
+  it('places a ship at specific coordinates by calling the ship constructor method', () => {
+    expect(shipOne.coordinates).toContainEqual({x: 1, y: 3})
+  })
+
+  it(`receives an attack; if it's a hit, then records a hit for the ship and on the gameboard`, () => {
+    const attackCoordinates = {x: 1, y: 3}
+    
+    gameboard.receiveAttack(attackCoordinates)
+
+    expect(shipOne.hits).toBe(1)
+    expect(gameboard.attackedCoordinates.some(coord => coord.x === attackCoordinates.x && coord.y === attackCoordinates.y)).toBe(true)
+  })
+
+  it(`receives an attack; if it's a miss, then records a miss on the gameboard`, () => {
+    
+  })
 })
