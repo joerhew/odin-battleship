@@ -1,7 +1,7 @@
 export class Ship {
   constructor(length) {
     this.length = length
-    this.coordinates = []
+    this.arrayOfCoordinates = []
     this.gameboard = null
     this.hits = 0
     this.isSunk = false
@@ -25,7 +25,7 @@ export class Gameboard {
   }
 
   placeShip(ship, coordinates) {
-    ship.coordinates = coordinates
+    ship.arrayOfCoordinates = coordinates
     coordinates.forEach(coordinate => {
       let arrayShipCoordinates = []
       
@@ -34,7 +34,7 @@ export class Gameboard {
     })
   }
 
-  receiveAttack(coordinates) {
+  receiveAttack(attackedCoordinates) {
     const checkCoordinates = (targetCoordinates, allCoordinates) => {
       for (let i = 0; i < allCoordinates.length; i++) {
         for (let j = 0; j < allCoordinates[i].length; j++) {
@@ -46,13 +46,55 @@ export class Gameboard {
       return null
     }
     
-    const match = checkCoordinates(coordinates, this.shipsCoordinates)
+    const match = checkCoordinates(attackedCoordinates, this.shipsCoordinates)
     
     if (match) {
       match.ship.hits++
-      this.attackedCoordinates.push({ x: coordinates.x, y: coordinates.y, hit: true }) 
+      this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: true }) 
     } else {
-      this.attackedCoordinates.push({ x: coordinates.x, y: coordinates.y, hit: false })
+      this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: false })
     }
+  
+    return this.isGameOver()
+  }
+
+  isGameOver() {
+    const hitCount = this.attackedCoordinates.filter(coords => coords.hit === true).length
+    const shipCapacity = this.shipsCoordinates.length
+
+    return hitCount === shipCapacity
+  }
+}
+
+export class Player {
+  constructor(name, isHuman, gameboard) {
+    this.name = name
+    this.isHuman = isHuman
+    this.gameboard = gameboard
+  }
+}
+
+export class Controller {
+  constructor(players) {
+    this.players = players
+    this.whoseTurn = players[Math.round(Math.random)]
+  }
+
+  switchTurns() {
+    this.whoseTurn = this.whoseTurn === this.players[0]
+      ? this.players[1]
+      : this.players[0]
+  }
+
+  makeMove(player, action) {
+    switch (action.type) {
+      case 'attack':
+        const attackedPlayer = this.players.find(p => p !== player)
+        attackedPlayer.gameboard.receiveAttack(action.coordinates)
+        break
+      default:
+        break
+    }
+    this.switchTurns()
   }
 }
