@@ -6,9 +6,9 @@ export default class Gameboard {
     this.attackedCoordinates = []
   }
 
-  placeShip(ship, coordinates) {
-    ship.arrayOfCoordinates = coordinates
-    coordinates.forEach(coordinate => {
+  placeShip(ship, arrayOfCoordinates) {
+    ship.arrayOfCoordinates = arrayOfCoordinates
+    arrayOfCoordinates.forEach(coordinate => {
       let arrayShipCoordinates = []
       
       arrayShipCoordinates.push({ ship: ship, x: coordinate.x, y: coordinate.y })

@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1699894974553" clover="3.2.0">
-  <project timestamp="1699894974553" name="All files">
-    <metrics statements="46" coveredstatements="43" conditionals="12" coveredconditionals="9" methods="16" coveredmethods="15" elements="74" coveredelements="67" complexity="0" loc="46" ncloc="46" packages="1" files="3" classes="3"/>
+<coverage generated="1700061562779" clover="3.2.0">
+  <project timestamp="1700061562779" name="All files">
+    <metrics statements="48" coveredstatements="46" conditionals="12" coveredconditionals="10" methods="17" coveredmethods="17" elements="77" coveredelements="73" complexity="0" loc="48" ncloc="48" packages="1" files="4" classes="4"/>
+    <file name="controller.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/controller.js">
+      <metrics statements="13" coveredstatements="11" conditionals="6" coveredconditionals="4" methods="5" coveredmethods="5"/>
+      <line num="3" count="3" type="stmt"/>
+      <line num="4" count="3" type="stmt"/>
+      <line num="8" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="16" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="21" count="0" type="stmt"/>
+      <line num="24" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="25" count="0" type="stmt"/>
+      <line num="27" count="1" type="stmt"/>
+      <line num="32" count="1" type="stmt"/>
+      <line num="33" count="1" type="stmt"/>
+    </file>
     <file name="gameboard.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/gameboard.js">
       <metrics statements="24" coveredstatements="24" conditionals="6" coveredconditionals="6" methods="7" coveredmethods="7"/>
-      <line num="3" count="6" type="stmt"/>
-      <line num="4" count="6" type="stmt"/>
-      <line num="5" count="6" type="stmt"/>
-      <line num="6" count="6" type="stmt"/>
+      <line num="3" count="10" type="stmt"/>
+      <line num="4" count="10" type="stmt"/>
+      <line num="5" count="10" type="stmt"/>
+      <line num="6" count="10" type="stmt"/>
       <line num="10" count="5" type="stmt"/>
       <line num="11" count="5" type="stmt"/>
       <line num="12" count="13" type="stmt"/>
@@ -29,23 +45,12 @@
       <line num="45" count="7" type="stmt"/>
       <line num="47" count="7" type="stmt"/>
     </file>
-    <file name="index.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/index.js">
-      <metrics statements="15" coveredstatements="12" conditionals="6" coveredconditionals="3" methods="6" coveredmethods="5"/>
-      <line num="3" count="2" type="stmt"/>
-      <line num="4" count="2" type="stmt"/>
-      <line num="5" count="2" type="stmt"/>
-      <line num="11" count="1" type="stmt"/>
-      <line num="12" count="1" type="stmt"/>
-      <line num="16" count="1" type="cond" truecount="1" falsecount="1"/>
-      <line num="22" count="2" type="stmt"/>
-      <line num="24" count="1" type="cond" truecount="1" falsecount="1"/>
-      <line num="26" count="1" type="stmt"/>
-      <line num="27" count="1" type="stmt"/>
-      <line num="29" count="0" type="stmt"/>
-      <line num="32" count="1" type="cond" truecount="1" falsecount="1"/>
-      <line num="33" count="0" type="stmt"/>
-      <line num="35" count="1" type="stmt"/>
-      <line num="40" count="0" type="stmt"/>
+    <file name="player.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/player.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <line num="3" count="7" type="stmt"/>
+      <line num="4" count="7" type="stmt"/>
+      <line num="5" count="7" type="stmt"/>
+      <line num="9" count="6" type="stmt"/>
     </file>
     <file name="ship.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/ship.js">
       <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
