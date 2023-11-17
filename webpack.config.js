@@ -1,16 +1,26 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: './src/index.js',
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Battleship!',
+    }),
+  ],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
+  },
+  devServer: {
+    static: './dist',
   },
   module: {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: ['node_modules'],
+        exclude: [path.resolve(__dirname, 'node_modules')],
         use: ['babel-loader'],
       },
       {

@@ -4,3 +4,10 @@ import Gameboard from "./gameboard"
 import Ship from "./ship"
 
 console.log('hello')
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  const p = document.createElement("p");
+  p.innerText = 'created!';
+  document.body.appendChild(p);
+});

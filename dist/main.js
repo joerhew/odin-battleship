@@ -1,0 +1,1 @@
+(()=>{"use strict";console.log("hello"),document.addEventListener("DOMContentLoaded",(function(e){var n=document.createElement("p");n.innerText="created!",document.body.appendChild(n)}))})();
