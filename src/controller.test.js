@@ -1,3 +1,5 @@
+/* global describe, beforeEach, it, expect */
+
 import Player from './player'
 import Controller from './controller'
 import Ship from './ship'

@@ -9,17 +9,17 @@ export default class Gameboard {
   placeShip(ship, arrayOfCoordinates) {
     ship.arrayOfCoordinates = arrayOfCoordinates
     arrayOfCoordinates.forEach(coordinate => {
-      let arrayShipCoordinates = []
+      const arrayShipCoordinates = []
       
-      arrayShipCoordinates.push({ ship: ship, x: coordinate.x, y: coordinate.y })
+      arrayShipCoordinates.push({ ship, x: coordinate.x, y: coordinate.y })
       this.shipsCoordinates.push(arrayShipCoordinates)
     })
   }
 
   receiveAttack(attackedCoordinates) {
     const checkCoordinates = (targetCoordinates, allCoordinates) => {
-      for (let i = 0; i < allCoordinates.length; i++) {
-        for (let j = 0; j < allCoordinates[i].length; j++) {
+      for (let i = 0; i < allCoordinates.length; i += 1) {
+        for (let j = 0; j < allCoordinates[i].length; j += 1) {
           if (allCoordinates[i][j].x === targetCoordinates.x && allCoordinates[i][j].y === targetCoordinates.y) {
             return allCoordinates[i][j]
           }
@@ -31,7 +31,7 @@ export default class Gameboard {
     const match = checkCoordinates(attackedCoordinates, this.shipsCoordinates)
     
     if (match) {
-      match.ship.hits++
+      match.ship.hits += 1
       this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: true }) 
     } else {
       this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: false })

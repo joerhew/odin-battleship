@@ -1,3 +1,5 @@
+/* global describe, beforeEach, it, expect */
+
 import Ship from './ship'
 
 describe('Ship class', () => {
@@ -19,7 +21,7 @@ describe('Ship class', () => {
     expect(newShip.hits).toBe(1)
   })
   it('if a ship is hit the same number of times as its length, it is sunk', () => {
-    for (let i = 0; i < newShip.length; i++) {
+    for (let i = 0; i < newShip.length; i += 1) {
       newShip.hit()
       newShip.checkSunk()
       expect(newShip.isSunk).toBe(i === newShip.length - 1)
