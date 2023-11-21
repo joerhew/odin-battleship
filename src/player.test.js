@@ -1,3 +1,5 @@
+/* global describe, it, expect */
+
 import Player from "./player"
 
 describe('Player class', () => {

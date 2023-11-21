@@ -22,14 +22,13 @@ export default class Controller {
     }
 
     if (attackedPlayer.gameboard.areAllShipsHit()) {
-      this.endGameWithWinner(this.whoseTurn)
+      this.endGameWithWinner()
     } else {
       this.switchTurns()
     }
   }
 
-  endGameWithWinner(player) {
-    const message = `Game over! ${player.name} wins the game!`
-    return message
+  endGameWithWinner() {
+    return `Game over! ${this.whoseTurn.name} wins the game!`
   }
 }
