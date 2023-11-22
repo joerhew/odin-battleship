@@ -1,7 +1,9 @@
+import Player from './player'
+
 export default class Controller {
-  constructor(players) {
-    this.players = players
-    this.whoseTurn = players[Math.round(Math.random())]
+  constructor(playerNames) {
+    this.players = playerNames.map(name => new Player(name, name !== 'Bot'))
+    this.whoseTurn = this.players[Math.round(Math.random())]
   }
 
   switchTurns() {
@@ -28,7 +30,7 @@ export default class Controller {
     }
   }
 
-  endGameWithWinner() {
+  endGame() {
     return `Game over! ${this.whoseTurn.name} wins the game!`
   }
 }

@@ -1,28 +1,13 @@
 /* global describe, beforeEach, it, expect */
 
-import Player from './player'
 import Controller from './controller'
 import Ship from './ship'
-import Gameboard from './gameboard'
 
-describe('Controller class', () => {
-  let playerOne
-  let playerTwo
-  let playerOneGameboard
-  let playerTwoGameboard
+describe.only('Controller class', () => {
   let gameController
 
   beforeEach(() => {
-    playerOne = new Player('Joe', true)
-    playerTwo = new Player('Bot', false) 
-
-    playerOneGameboard = new Gameboard
-    playerTwoGameboard = new Gameboard
-    
-    playerOne.assignBoard(playerOneGameboard)
-    playerTwo.assignBoard(playerTwoGameboard)
-    
-    gameController = new Controller([playerOne, playerTwo])
+    gameController = new Controller(['Joe', 'Bot'])
   })
 
   it('switches turns between players', () => {
@@ -46,7 +31,7 @@ describe('Controller class', () => {
   })
 
   it('declares a winner when the game ends', () => {
-    const msg = gameController.endGameWithWinner(playerOne)
-    expect(msg).toContain(playerOne.name)
+    const msg = gameController.endGame()
+    expect(msg).toContain(gameController.whoseTurn.name)
   })
 })

@@ -1,3 +1,40 @@
-.hi {
-  color: red
+#container {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+}
+
+.message {
+  border: 1px solid black;
+  padding: 2rem;
+}
+
+.board-container {
+  padding: 2rem;
+}
+
+.player-name {
+  text-align: center;
+}
+
+.board {
+  display: grid;
+  width: 35vw;
+  height: 35vw;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+}
+
+.cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
 }

@@ -5,6 +5,8 @@ import Player from "./player"
 import Gameboard from "./gameboard"
 import Ship from "./ship"
 
+// Create players, boards, and ships
+
 const playerOne = new Player('Joe', true)
 const playerTwo = new Player('Bot', false)
 
@@ -25,13 +27,29 @@ const game = new Controller(players)
 
 console.log(`It's ${game.whoseTurn.name}'s turn.`)
 
-const container = document.createElement("div")
-document.body.appendChild(container)
+// Create boards
 
-const p = document.createElement('p')
-p.innerText = playerOne.name
-container.appendChild(p)
+const boardContainers = document.querySelectorAll('.board-container')
 
-const ptwo = document.createElement('p')
-ptwo.innerText = playerTwo.name
-container.appendChild(ptwo)
+boardContainers.forEach((container, index) => {
+  // Player name
+  const playerName = document.createElement('h2')
+  playerName.className = 'player-name'
+  playerName.innerText = players[index].name
+  container.appendChild(playerName)
+
+  // Board
+  const board = document.createElement('div')
+  board.className = 'board'
+  board.id = `board-${index}`
+  const boardSize = 10
+  for (let i = 0; i < boardSize; i += 1) {
+    for (let j = 0; j < boardSize; j += 1) {
+    const cell = document.createElement('div')
+      cell.className = 'cell'
+      cell.id = `cell-${i}-${j}`
+      board.appendChild(cell)
+    }
+  }
+  container.appendChild(board)
+})
