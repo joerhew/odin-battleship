@@ -13,7 +13,8 @@ const shipTwo = new Ship(4)
 game.players[0].gameboard.placeShip(shipOne, [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }])
 game.players[1].gameboard.placeShip(shipTwo, [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }])
 
-console.log(`It's ${game.whoseTurn.name}'s turn.`)
+const message = document.querySelector('.message')
+message.innerText = game.currentMessage
 
 // Create boards
 
@@ -49,6 +50,5 @@ boardContainers.forEach((container, index) => {
     player.gameboard.shipsCoordinates.forEach(coord => {
       const cell = board.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
       cell.classList.add('ship')
-      console.log(cell)
     })
   })
