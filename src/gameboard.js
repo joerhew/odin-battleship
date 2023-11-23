@@ -30,6 +30,7 @@ export default class Gameboard {
     
     const match = checkCoordinates(attackedCoordinates, this.shipsCoordinates)
 
+    
     if (match) {
       match.ship.hits += 1
       this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: true }) 

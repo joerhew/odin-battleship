@@ -4,6 +4,7 @@ export default class Controller {
   constructor(playerNames) {
     this.players = playerNames.map(name => new Player(name, name !== 'Bot'))
     this.whoseTurn = this.players[Math.round(Math.random())]
+    this.currentMessage = null
   }
 
   switchTurns() {

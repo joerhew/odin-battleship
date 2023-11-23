@@ -36,5 +36,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  outline: 1px solid black;
+}
+
+.ship {
+  background-color: burlywood;
+  outline: 2px solid brown;
 }
