@@ -1,14 +1,32 @@
 import Player from './player'
 
+const messages = (player = '', xCoord = '', yCoord = '') => ({
+  start: "Place your ships",
+  turn: `It's ${player.name}'s turn!`,
+  attack: `${player.name} attacks at coordinates "${xCoord}, ${yCoord}"!`,
+  miss: `The attack at coordinate "${xCoord}, ${yCoord}" is a miss.`,
+  hit: `The attack at coordinate "${xCoord}, ${yCoord}" is a hit!`,
+  sink: `${player.name} sinks a ship!`,
+  end: `${player.name} wins!`,
+})
+
 export default class Controller {
   constructor(playerNames) {
     this.players = playerNames.map(name => new Player(name, name !== 'Bot'))
-    this.whoseTurn = this.players[Math.round(Math.random())]
-    this.currentMessage = `Place your ships`
+    this.whoseTurn = ''
+    this.currentMessage = messages().start
   }
 
   updateCurrentMessage(message) {
     this.currentMessage = message
+  }
+
+  start() {
+    // this.whoseTurn = this.players[Math.round(Math.random())]
+    [this.whoseTurn] = this.players // Assgining Joe for now
+    
+    const message = messages(this.whoseTurn).turn
+    this.updateCurrentMessage(message)
   }
 
   switchTurns() {
@@ -16,7 +34,7 @@ export default class Controller {
       ? this.players[1]
       : this.players[0]
     
-    const message = `It is ${this.whoseTurn.name}'s turn.`
+    const message = messages(this.WhoseTurn).turn
 
     this.updateCurrentMessage(message)
   }

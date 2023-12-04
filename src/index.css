@@ -1,3 +1,13 @@
+button {
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 #container {
   border: 1px solid black;
   display: flex;
@@ -12,6 +22,12 @@
 }
 
 .message {
+  border: 1px solid black;
+  padding: 2rem;
+  font-size: 2rem;
+}
+
+.buttons {
   border: 1px solid black;
   padding: 2rem;
   font-size: 2rem;
