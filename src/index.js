@@ -32,9 +32,33 @@ const startGame = () => {
   updateMessage()
 }
 
-updateMessage()
-// Event listeners
+const clickOnCell = (cellId) => {
+  const parts = cellId.split('-')
+  
+  const clickedCell = {
+    playerIndex: parseInt(parts[1], 10),
+    coords: {
+      x: parseInt(parts[3], 10),
+      y: parseInt(parts[4], 10)
+    }
+  }
+  
+  if (game.whoseTurn !== game.players[clickedCell.playerIndex]) {
+    game.makeMove(game.whoseTurn, {
+      type: 'attack',
+      coordinates: {
+        x: clickedCell.coords.x,
+        y: clickedCell.coords.y
+      }
+    })
+  }
 
+  else {
+    console.log(cellId)
+  }
+}
+
+// Event listeners
 
 startButton.addEventListener('click', () => {
   startGame()
@@ -60,6 +84,9 @@ boardContainers.forEach((container, index) => {
       const cell = document.createElement('div')
       cell.className = 'cell clean'
       cell.id = `board-${index}-cell-${i}-${j}`
+      cell.addEventListener('click', (e) => {
+        clickOnCell(e.target.id)
+      })
       board.appendChild(cell)
     }
   }
@@ -75,3 +102,7 @@ boardContainers.forEach((container, index) => {
     })
   })
 
+
+  // Init
+
+  updateMessage()

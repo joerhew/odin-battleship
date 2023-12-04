@@ -34,8 +34,10 @@ export default class Gameboard {
     if (match) {
       match.ship.hits += 1
       this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: true }) 
+      console.log('hit')
     } else {
       this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: false })
+      console.log('miss')
     }
   
     return this.areAllShipsHit()

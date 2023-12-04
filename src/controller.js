@@ -45,6 +45,7 @@ export default class Controller {
     switch (action.type) {
       case 'attack':
         attackedPlayer.gameboard.receiveAttack(action.coordinates)
+        console.log('attacked')
         break
       default:
         break
