@@ -19,28 +19,20 @@ export default class Gameboard {
   }
 
   receiveAttack(attackedCoordinates) {
-    const checkCoordinates = (targetCoordinates, allCoordinates) => {
-      for (let i = 0; i < allCoordinates.length; i += 1) {
-        if (allCoordinates[i].x === targetCoordinates.x && allCoordinates[i].y === targetCoordinates.y) {
-          return allCoordinates[i]
-        }
-      }
-      return null
-    }
-    
-    const match = checkCoordinates(attackedCoordinates, this.shipsCoordinates)
-
-    
-    if (match) {
-      match.ship.hits += 1
-      this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: true }) 
-      console.log('hit')
-    } else {
-      this.attackedCoordinates.push({ x: attackedCoordinates.x, y: attackedCoordinates.y, hit: false })
-      console.log('miss')
+    const match = this.shipsCoordinates.find(coordinate => 
+      coordinate.x === attackedCoordinates.x && coordinate.y === attackedCoordinates.y
+    )
+  
+    const result = { 
+      x: attackedCoordinates.x, 
+      y: attackedCoordinates.y, 
+      hit: Boolean(match)
     }
   
-    return this.areAllShipsHit()
+    if (match) match.ship.hits += 1
+    this.attackedCoordinates.push(result)
+  
+    return result
   }
 
   areAllShipsHit() {

@@ -18,6 +18,7 @@ export default class Controller {
   }
 
   updateCurrentMessage(message) {
+    console.log(message)
     this.currentMessage = message
   }
 
@@ -35,7 +36,6 @@ export default class Controller {
       : this.players[0]
     
     const message = messages(this.whoseTurn).turn
-    console.log(message)
 
     this.updateCurrentMessage(message)
   }
@@ -44,10 +44,20 @@ export default class Controller {
     const attackedPlayer = this.players.find(p => p !== player)
 
     switch (action.type) {
-      case 'attack':
-        attackedPlayer.gameboard.receiveAttack(action.coordinates)
-        console.log('attacked')
+      case 'attack': {
+        const initialMessage = messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).attack
+        this.updateCurrentMessage(initialMessage)
+
+        const result = attackedPlayer.gameboard.receiveAttack(action.coordinates)
+
+        const message = result.hit 
+          ? messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).hit
+          : messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).miss;
+
+        this.updateCurrentMessage(message)
+        
         break
+      }
       default:
         break
     }
