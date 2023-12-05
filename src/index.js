@@ -34,6 +34,15 @@ const startGame = () => {
 
 const clickOnCell = (cellId) => {
   const parts = cellId.split('-')
+
+  const updateAttacks = () => {
+    game.players.forEach((player, index) => {
+      player.gameboard.attackedCoordinates.forEach(coord => {
+        const cell = document.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
+        cell.classList.add(coord.hit? 'hit' : 'miss')
+      })
+    })
+  }
   
   const clickedCell = {
     playerIndex: parseInt(parts[1], 10),
@@ -51,6 +60,9 @@ const clickOnCell = (cellId) => {
         y: clickedCell.coords.y
       }
     })
+
+    updateAttacks()
+    updateMessage()
   }
 
   else {
@@ -95,9 +107,8 @@ boardContainers.forEach((container, index) => {
 
   // Show ships
   game.players.forEach((player, index) => {
-    const board = document.querySelector(`#board-${index}`)
     player.gameboard.shipsCoordinates.forEach(coord => {
-      const cell = board.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
+      const cell = document.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
       cell.classList.add('ship')
     })
   })

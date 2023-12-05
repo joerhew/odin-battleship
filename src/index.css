@@ -60,3 +60,13 @@ button:hover {
   background-color: burlywood;
   outline: 2px solid brown;
 }
+
+.hit {
+  background-color: green;
+  outline: 2px solid green;
+}
+
+.miss {
+  background-color: lightgray;
+  outline: 2px solid lightslategray;
+}

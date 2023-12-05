@@ -34,7 +34,8 @@ export default class Controller {
       ? this.players[1]
       : this.players[0]
     
-    const message = messages(this.WhoseTurn).turn
+    const message = messages(this.whoseTurn).turn
+    console.log(message)
 
     this.updateCurrentMessage(message)
   }
@@ -52,7 +53,7 @@ export default class Controller {
     }
 
     if (attackedPlayer.gameboard.areAllShipsHit()) {
-      this.endGameWithWinner()
+      this.endGame()
     } else {
       this.switchTurns()
     }
