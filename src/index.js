@@ -81,7 +81,13 @@ const executeButtonAction = () => {
 
 const clickOnCell = (cellId) => {
   const parts = cellId.split('-')
-
+  const clickedCell = {
+    playerIndex: parseInt(parts[1], 10),
+    coords: {
+      x: parseInt(parts[3], 10),
+      y: parseInt(parts[4], 10)
+    }
+  }
   const updateAttacks = () => {
     game.players.forEach((player, index) => {
       player.gameboard.attackedCoordinates.forEach(coord => {
@@ -90,30 +96,31 @@ const clickOnCell = (cellId) => {
       })
     })
   }
-  
-  const clickedCell = {
-    playerIndex: parseInt(parts[1], 10),
-    coords: {
-      x: parseInt(parts[3], 10),
-      y: parseInt(parts[4], 10)
-    }
-  }
-  
-  if (game.whoseTurn !== game.players[clickedCell.playerIndex]) {
-    game.makeMove(game.whoseTurn, {
-      type: 'attack',
-      coordinates: {
-        x: clickedCell.coords.x,
-        y: clickedCell.coords.y
-      }
-    })
 
-    updateAttacks()
-    updateMessage()
-  } else {
-    console.log(cellId)
+  if (game.whoseTurn === game.players[clickedCell.playerIndex]) {
+    console.log('Attack your opponent, not yourself')
+    return
   }
 
+  const attackedPlayerIndex = (game.whoseTurn === game.players[0]) ? 1 : 0
+  const cellAlreadyAttacked = game.players[attackedPlayerIndex].gameboard.attackedCoordinates.some(coord => 
+    coord.x === clickedCell.coords.x && coord.y === clickedCell.coords.y
+  )
+
+  if (cellAlreadyAttacked) {
+    console.log('You have already attacked that cell')
+    return
+  }
+
+  game.makeMove(game.whoseTurn, {
+    type: 'attack',
+    coordinates: clickedCell.coords
+  })
+
+  updateAttacks()
+  updateMessage()
+
+  // Check if the game has ended after the attack
   if (game.status === 'ended') {
     updateButtonText('Restart')
   }
