@@ -14,17 +14,17 @@ export default class Controller {
   constructor(playerNames) {
     this.players = playerNames.map(name => new Player(name, name !== 'Bot'))
     this.whoseTurn = ''
+    this.status = 'start'
     this.currentMessage = messages().start
   }
 
   updateCurrentMessage(message) {
-    console.log(message)
     this.currentMessage = message
   }
 
   start() {
-    // this.whoseTurn = this.players[Math.round(Math.random())]
-    [this.whoseTurn] = this.players // Assgining Joe for now
+    this.status = 'in progress'
+    this.whoseTurn = this.players[Math.round(Math.random())]
     
     const message = messages(this.whoseTurn).turn
     this.updateCurrentMessage(message)
@@ -71,7 +71,7 @@ export default class Controller {
 
   endGame() {
     const message = `Game over! ${this.whoseTurn.name} wins the game!`
-    
+    this.status = 'ended'
     this.updateCurrentMessage(message)
   }
 }

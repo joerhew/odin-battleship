@@ -3,33 +3,80 @@ import './index.css'
 import Controller from "./controller"
 import Ship from "./ship"
 
+let game
+
 // Query selectors
 
 const message = document.querySelector('.message')
-const startButton = document.querySelector('#start')
+const actionButton = document.querySelector('#start')
 const boardContainers = document.querySelectorAll('.board-container')
 
 // Create players, boards, and ships
-
-const game = new Controller(['Joe', 'Bot'])
-
-const shipOne = new Ship(3)
-const shipTwo = new Ship(4)
-
-game.players[0].gameboard.placeShip(shipOne, [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }])
-game.players[0].gameboard.placeShip(shipOne, [{ x: 6, y: 6 }, { x: 7, y: 6 }])
-game.players[1].gameboard.placeShip(shipTwo, [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }])
-game.players[1].gameboard.placeShip(shipTwo, [{ x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 }])
-
-// Functions
 
 const updateMessage = () => {
   message.innerText = game.currentMessage
 }
 
+const init = () => {
+  game = new Controller(['Joe', 'Bot'])
+
+  const shipOne = new Ship(3)
+  const shipTwo = new Ship(4)
+
+  game.players[0].gameboard.placeShip(shipOne, [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }])
+  game.players[0].gameboard.placeShip(shipOne, [{ x: 6, y: 6 }, { x: 7, y: 6 }])
+  game.players[1].gameboard.placeShip(shipTwo, [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }])
+  game.players[1].gameboard.placeShip(shipTwo, [{ x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 }])
+
+  updateMessage()
+}
+
+init()
+
+// Functions
+
+const updateButtonText = text => {
+  actionButton.innerText = text
+}
+
+const clearBoards = () => {
+  const hits = document.querySelectorAll('.hit')
+  hits.forEach(hit => {
+    hit.classList.remove('hit')
+  })
+
+  const misses = document.querySelectorAll('.miss')
+  misses.forEach(miss => {
+    miss.classList.remove('miss')
+  })
+}
+
 const startGame = () => {
   game.start()
+  updateButtonText('Reset')
   updateMessage()
+}
+
+const resetGame = () => {
+  clearBoards()
+  init()
+  updateButtonText('Start')
+}
+
+const executeButtonAction = () => {
+  switch (game.status) {
+    case 'in progress':
+      resetGame()
+      break
+    case 'start':
+      startGame()
+      break
+    case 'ended':
+      resetGame()
+      break
+    default:
+      break
+  }
 }
 
 const clickOnCell = (cellId) => {
@@ -63,17 +110,19 @@ const clickOnCell = (cellId) => {
 
     updateAttacks()
     updateMessage()
+  } else {
+    console.log(cellId)
   }
 
-  else {
-    console.log(cellId)
+  if (game.status === 'ended') {
+    updateButtonText('Restart')
   }
 }
 
 // Event listeners
 
-startButton.addEventListener('click', () => {
-  startGame()
+actionButton.addEventListener('click', () => {
+  executeButtonAction()
 })
 
 // Create boards
@@ -112,8 +161,3 @@ boardContainers.forEach((container, index) => {
       cell.classList.add('ship')
     })
   })
-
-
-  // Init
-
-  updateMessage()
