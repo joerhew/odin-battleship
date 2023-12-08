@@ -98,7 +98,8 @@ const clickOnCell = (cellId) => {
   }
 
   if (game.whoseTurn === game.players[clickedCell.playerIndex]) {
-    console.log('Attack your opponent, not yourself')
+    game.attackOwnBoard()
+    updateMessage()
     return
   }
 
@@ -108,7 +109,8 @@ const clickOnCell = (cellId) => {
   )
 
   if (cellAlreadyAttacked) {
-    console.log('You have already attacked that cell')
+    game.attackAlreadyAttackedCell()
+    updateMessage()
     return
   }
 
@@ -159,6 +161,11 @@ boardContainers.forEach((container, index) => {
     }
   }
   container.appendChild(board)
+  
+  // ship-new
+  const newShip = document.createElement('div')
+  newShip.className = 'ship-new'
+  board.appendChild(newShip)
 })
 
   // Show ships

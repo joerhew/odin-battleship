@@ -42,6 +42,7 @@ button:hover {
 }
 
 .board {
+  position: relative;
   display: grid;
   width: 35vw;
   height: 35vw;
@@ -59,6 +60,14 @@ button:hover {
 .ship {
   background-color: burlywood;
   outline: 2px solid brown;
+}
+
+.ship-new {
+  grid-column: 5 / span 3;
+  grid-row: 5;
+  
+  background-color: aqua;
+  outline: 2px solid aquamarine;
 }
 
 .hit {

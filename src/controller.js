@@ -4,17 +4,27 @@ const messages = (player = '', xCoord = '', yCoord = '') => ({
   start: "Place your ships",
   turn: `It's ${player.name}'s turn!`,
   attack: `${player.name} attacks at coordinates "${xCoord}, ${yCoord}"!`,
+  errors: {
+    attacksOwnBoard: 'Attack your opponent, not yourself',
+    attacksAlreadyAttackedCell: 'You have already attacked that cell',
+  },
   miss: `The attack at coordinate "${xCoord}, ${yCoord}" is a miss.`,
   hit: `The attack at coordinate "${xCoord}, ${yCoord}" is a hit!`,
   sink: `${player.name} sinks a ship!`,
   end: `${player.name} wins!`,
 })
 
+const GameStatus = {
+  START: 'start',
+  IN_PROGRESS: 'in progress',
+  ENDED: 'ended'
+}
+
 export default class Controller {
   constructor(playerNames) {
     this.players = playerNames.map(name => new Player(name, name !== 'Bot'))
     this.whoseTurn = ''
-    this.status = 'start'
+    this.status = GameStatus.START
     this.currentMessage = messages().start
   }
 
@@ -23,7 +33,7 @@ export default class Controller {
   }
 
   start() {
-    this.status = 'in progress'
+    this.status = GameStatus.IN_PROGRESS
     this.whoseTurn = this.players[Math.round(Math.random())]
     
     const message = messages(this.whoseTurn).turn
@@ -69,9 +79,19 @@ export default class Controller {
     }
   }
 
+  attackOwnBoard() {
+    const message = messages().errors.attacksOwnBoard
+    this.updateCurrentMessage(message)
+  }
+
+  attackAlreadyAttackedCell() {
+    const message = messages().errors.attacksAlreadyAttackedCell
+    this.updateCurrentMessage(message)
+  }
+
   endGame() {
     const message = `Game over! ${this.whoseTurn.name} wins the game!`
-    this.status = 'ended'
+    this.status = GameStatus.ENDED
     this.updateCurrentMessage(message)
   }
 }

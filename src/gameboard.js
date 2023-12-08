@@ -4,7 +4,7 @@ export default class Gameboard {
   constructor() {
     this.length = 10
     this.width = 10
-    this.shipsCoordinates = []
+    this.shipsCoordinates = [] // Change to an array of ships, each of which has an array of coordinates
     this.attackedCoordinates = []
   }
 
