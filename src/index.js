@@ -1,7 +1,6 @@
 import './index.css'
 
 import Controller from "./controller"
-import Ship from "./ship"
 
 let game
 
@@ -20,13 +19,10 @@ const updateMessage = () => {
 const init = () => {
   game = new Controller(['Joe', 'Bot'])
 
-  const shipOne = new Ship(3)
-  const shipTwo = new Ship(4)
-
-  game.players[0].gameboard.placeShip(shipOne, [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }])
-  game.players[0].gameboard.placeShip(shipOne, [{ x: 6, y: 6 }, { x: 7, y: 6 }])
-  game.players[1].gameboard.placeShip(shipTwo, [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }])
-  game.players[1].gameboard.placeShip(shipTwo, [{ x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 }])
+  game.players[0].gameboard.placeShip(3, [{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }])
+  game.players[0].gameboard.placeShip(2, [{ x: 6, y: 6 }, { x: 7, y: 6 }])
+  game.players[1].gameboard.placeShip(4, [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }])
+  game.players[1].gameboard.placeShip(3, [{ x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 }])
 
   updateMessage()
 }
@@ -152,7 +148,7 @@ boardContainers.forEach((container, index) => {
   for (let i = 0; i < boardSize; i += 1) {
     for (let j = 0; j < boardSize; j += 1) {
       const cell = document.createElement('div')
-      cell.className = 'cell clean'
+      cell.className = 'cell'
       cell.id = `board-${index}-cell-${i}-${j}`
       cell.addEventListener('click', (e) => {
         clickOnCell(e.target.id)
@@ -162,16 +158,24 @@ boardContainers.forEach((container, index) => {
   }
   container.appendChild(board)
   
-  // ship-new
-  const newShip = document.createElement('div')
-  newShip.className = 'ship-new'
-  board.appendChild(newShip)
-})
+  // Place ships
+  // To implement: Place the ship inside the starting cell, so that it doesn't take up the cell spots
+  const player = game.players[index];
+  player.gameboard.ships.forEach(ship => {
+    const orientation = ship.arrayOfCoordinates[1].x - ship.arrayOfCoordinates[0].x === 0
+      ? 'vertical'
+      : 'horizontal'
 
-  // Show ships
-  game.players.forEach((player, index) => {
-    player.gameboard.shipsCoordinates.forEach(coord => {
-      const cell = document.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
-      cell.classList.add('ship')
-    })
+    const newShip = document.createElement('div')
+    newShip.className = 'ship'
+
+    if (orientation === 'horizontal') {
+      newShip.style.gridColumn = `${ship.arrayOfCoordinates[0].x + 1} / span ${ship.length}`
+      newShip.style.gridRow = `${ship.arrayOfCoordinates[0].y + 1}`
+    } else {
+      newShip.style.gridColumn = `${ship.arrayOfCoordinates[0].x + 1}`
+      newShip.style.gridRow = `${ship.arrayOfCoordinates[0].y + 1} / span ${ship.length}`
+    }
+    board.appendChild(newShip)
   })
+})

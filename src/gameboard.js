@@ -4,24 +4,30 @@ export default class Gameboard {
   constructor() {
     this.length = 10
     this.width = 10
-    this.shipsCoordinates = [] // Change to an array of ships, each of which has an array of coordinates
+    this.ships = []
     this.attackedCoordinates = []
   }
 
   placeShip(length, arrayOfCoordinates) {
     const ship = new Ship(length)
     ship.arrayOfCoordinates = arrayOfCoordinates
-    arrayOfCoordinates.forEach(coordinate => {
-      this.shipsCoordinates.push({ ship, x: coordinate.x, y: coordinate.y })
-    })
+    this.ships.push(ship)
 
     return ship
   }
 
   receiveAttack(attackedCoordinates) {
-    const match = this.shipsCoordinates.find(coordinate => 
-      coordinate.x === attackedCoordinates.x && coordinate.y === attackedCoordinates.y
-    )
+    let match = null;
+
+    this.ships.forEach(ship => {
+      const found = ship.arrayOfCoordinates.find(coordinate =>
+        coordinate.x === attackedCoordinates.x && coordinate.y === attackedCoordinates.y
+      )
+
+      if (found) {
+        match = { ship, ...found };
+      }
+    })
   
     const result = { 
       x: attackedCoordinates.x, 
@@ -37,7 +43,10 @@ export default class Gameboard {
 
   areAllShipsHit() {
     const hitCount = this.attackedCoordinates.filter(coords => coords.hit === true).length
-    const shipCapacity = this.shipsCoordinates.length
+    let shipCapacity = 0
+    this.ships.forEach(ship => {
+      shipCapacity += ship.length
+    })
 
     return hitCount === shipCapacity
   }
