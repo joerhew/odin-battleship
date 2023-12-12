@@ -84,6 +84,7 @@ const clickOnCell = (cellId) => {
       y: parseInt(parts[4], 10)
     }
   }
+
   const updateAttacks = () => {
     game.players.forEach((player, index) => {
       player.gameboard.attackedCoordinates.forEach(coord => {
@@ -149,7 +150,7 @@ boardContainers.forEach((container, index) => {
     for (let j = 0; j < boardSize; j += 1) {
       const cell = document.createElement('div')
       cell.className = 'cell'
-      cell.id = `board-${index}-cell-${i}-${j}`
+      cell.id = `board-${index}-cell-${j}-${i}`
       cell.addEventListener('click', (e) => {
         clickOnCell(e.target.id)
       })
@@ -159,23 +160,23 @@ boardContainers.forEach((container, index) => {
   container.appendChild(board)
   
   // Place ships
-  // To implement: Place the ship inside the starting cell, so that it doesn't take up the cell spots
   const player = game.players[index];
   player.gameboard.ships.forEach(ship => {
     const orientation = ship.arrayOfCoordinates[1].x - ship.arrayOfCoordinates[0].x === 0
       ? 'vertical'
       : 'horizontal'
 
+    const startingCell = document.querySelector(`#board-${index}-cell-${ship.arrayOfCoordinates[0].x}-${ship.arrayOfCoordinates[0].y}`)
     const newShip = document.createElement('div')
     newShip.className = 'ship'
 
     if (orientation === 'horizontal') {
-      newShip.style.gridColumn = `${ship.arrayOfCoordinates[0].x + 1} / span ${ship.length}`
-      newShip.style.gridRow = `${ship.arrayOfCoordinates[0].y + 1}`
+      newShip.style.width = `${ship.length * 2}em`
+      newShip.style.height = '2em'
     } else {
-      newShip.style.gridColumn = `${ship.arrayOfCoordinates[0].x + 1}`
-      newShip.style.gridRow = `${ship.arrayOfCoordinates[0].y + 1} / span ${ship.length}`
+      newShip.style.width = `2em`
+      newShip.style.height = `${ship.length * 2}em`
     }
-    board.appendChild(newShip)
+    startingCell.appendChild(newShip)
   })
 })

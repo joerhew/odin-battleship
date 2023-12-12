@@ -46,22 +46,20 @@ button:hover {
   display: grid;
   width: 35vw;
   height: 35vw;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 2em);
+  grid-template-rows: repeat(10, 2em);
 }
 
 .cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   outline: 1px solid black;
-  z-index: 2;
 }
 
 .ship {
   background-color: burlywood;
   outline: 2px solid brown;
-  z-index: 1;
+  overflow: visible;
+  position: relative;
+  z-index: -1;
 }
 
 .hit {
