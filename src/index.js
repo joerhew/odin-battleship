@@ -76,6 +76,10 @@ const executeButtonAction = () => {
 }
 
 const clickOnCell = (cellId) => {
+  if (game.status === 'start' || game.status === 'ended') {
+    return
+  }
+  
   const parts = cellId.split('-')
   const clickedCell = {
     playerIndex: parseInt(parts[1], 10),
@@ -133,24 +137,39 @@ actionButton.addEventListener('click', () => {
 
 // Create boards
 
-boardContainers.forEach((container, index) => {
+boardContainers.forEach((container, containerIndex) => {
   
   // Player name
   const playerName = document.createElement('h2')
   playerName.className = 'player-name'
-  playerName.innerText = game.players[index].name
+  playerName.innerText = game.players[containerIndex].name
   container.appendChild(playerName)
 
   // Board
   const board = document.createElement('div')
   board.className = 'board'
-  board.id = `board-${index}`
+  board.id = `board-${containerIndex}`
   const boardSize = 10
+
+  // Drag-and-drop
+  const dragoverHandler = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const dropHandler = (e) => {
+    e.preventDefault()
+    const data = e.dataTransfer.getData('text/plain')
+    e.target.appendChild(document.getElementById(data))
+  }
+
   for (let i = 0; i < boardSize; i += 1) {
     for (let j = 0; j < boardSize; j += 1) {
       const cell = document.createElement('div')
       cell.className = 'cell'
-      cell.id = `board-${index}-cell-${j}-${i}`
+      cell.id = `board-${containerIndex}-cell-${j}-${i}`
+      cell.ondrop = dropHandler
+      cell.ondragover = dragoverHandler
       cell.addEventListener('click', (e) => {
         clickOnCell(e.target.id)
       })
@@ -160,16 +179,42 @@ boardContainers.forEach((container, index) => {
   container.appendChild(board)
   
   // Place ships
-  const player = game.players[index];
-  player.gameboard.ships.forEach(ship => {
-    const orientation = ship.arrayOfCoordinates[1].x - ship.arrayOfCoordinates[0].x === 0
+  const player = game.players[containerIndex];
+  player.gameboard.ships.forEach((ship, shipIndex) => {
+    let orientation = ship.arrayOfCoordinates[1].x - ship.arrayOfCoordinates[0].x === 0
       ? 'vertical'
       : 'horizontal'
 
-    const startingCell = document.querySelector(`#board-${index}-cell-${ship.arrayOfCoordinates[0].x}-${ship.arrayOfCoordinates[0].y}`)
+    const startingCell = document.querySelector(`#board-${containerIndex}-cell-${ship.arrayOfCoordinates[0].x}-${ship.arrayOfCoordinates[0].y}`)
     const newShip = document.createElement('div')
     newShip.className = 'ship'
+    newShip.id = `#board-${containerIndex}-ship-${shipIndex}`
 
+    // Drag-and-drop
+    const dragstartHandler = (e) => {
+      e.dataTransfer.setData('text/plain', e.target.id)
+      e.dataTransfer.dropEffect = 'move'
+    }
+    
+    newShip.draggable = 'true'
+    newShip.addEventListener('dragstart', dragstartHandler)
+
+    // Click to rotate
+
+    newShip.addEventListener('click', () => {
+      console.log('pressed')
+      if (orientation === 'horizontal') {
+        newShip.style.width = '2em'
+        newShip.style.height = `${ship.length * 2}em`
+        orientation = 'vertical'
+      } else {
+        newShip.style.width = `${ship.length * 2}em`
+        newShip.style.height = '2em'
+        orientation = 'horizontal'
+      }
+    })
+
+    // Sizing of the ship based on length
     if (orientation === 'horizontal') {
       newShip.style.width = `${ship.length * 2}em`
       newShip.style.height = '2em'
