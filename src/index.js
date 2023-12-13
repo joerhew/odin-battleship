@@ -3,6 +3,7 @@ import './index.css'
 import Controller from "./controller"
 
 let game
+const shipMap = new Map()
 
 // Query selectors
 
@@ -159,8 +160,24 @@ boardContainers.forEach((container, containerIndex) => {
 
   const dropHandler = (e) => {
     e.preventDefault()
-    const data = e.dataTransfer.getData('text/plain')
-    e.target.appendChild(document.getElementById(data))
+    
+    const shipId = e.dataTransfer.getData('text/plain')
+    const draggedShip = document.getElementById(shipId)
+
+    const shipObject = shipMap.get(shipId)
+
+    const checkForAdjacentShips = (dropPoint) => {
+      return true
+    }
+    
+    const notInSameCell = e.target.parentNode !== draggedShip.parentNode
+    const noAdjacentShips = true // checkForAdjacentShips(e.target.id)
+
+    
+    
+    if (notInSameCell && noAdjacentShips) {
+      e.target.appendChild(draggedShip)
+    }
   }
 
   for (let i = 0; i < boardSize; i += 1) {
@@ -168,18 +185,21 @@ boardContainers.forEach((container, containerIndex) => {
       const cell = document.createElement('div')
       cell.className = 'cell'
       cell.id = `board-${containerIndex}-cell-${j}-${i}`
+      
       cell.ondrop = dropHandler
       cell.ondragover = dragoverHandler
       cell.addEventListener('click', (e) => {
         clickOnCell(e.target.id)
       })
+
       board.appendChild(cell)
     }
   }
   container.appendChild(board)
   
   // Place ships
-  const player = game.players[containerIndex];
+  const player = game.players[containerIndex]
+
   player.gameboard.ships.forEach((ship, shipIndex) => {
     let orientation = ship.arrayOfCoordinates[1].x - ship.arrayOfCoordinates[0].x === 0
       ? 'vertical'
@@ -189,6 +209,7 @@ boardContainers.forEach((container, containerIndex) => {
     const newShip = document.createElement('div')
     newShip.className = 'ship'
     newShip.id = `#board-${containerIndex}-ship-${shipIndex}`
+    shipMap.set(newShip.id, ship)
 
     // Drag-and-drop
     const dragstartHandler = (e) => {
@@ -202,7 +223,6 @@ boardContainers.forEach((container, containerIndex) => {
     // Click to rotate
 
     newShip.addEventListener('click', () => {
-      console.log('pressed')
       if (orientation === 'horizontal') {
         newShip.style.width = '2em'
         newShip.style.height = `${ship.length * 2}em`

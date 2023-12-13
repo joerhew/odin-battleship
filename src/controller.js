@@ -1,7 +1,7 @@
 import Player from './player'
 
 const messages = (player = '', xCoord = '', yCoord = '') => ({
-  start: "Place your ships",
+  start: "Place your ships. Click to rotate. Drag to move.",
   turn: `It's ${player.name}'s turn!`,
   attack: `${player.name} attacks at coordinates "${xCoord}, ${yCoord}"!`,
   errors: {
