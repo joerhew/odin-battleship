@@ -87,18 +87,31 @@ const parseCellId = (cellId) => {
   }
 }
 
-const clickOnCell = (cellId) => {
+const clickOnCell = (elementId) => {
   if (game.status === 'start' || game.status === 'ended') {
     return
   }
+  
+  
+  const clickedElement = document.querySelector(`#${elementId}`)
+  
+  let cellId
+  
+  if (clickedElement.classList.contains('ship')) {
+    cellId = clickedElement.parentNode.id
+  } else {
+    cellId = clickedElement.id
+  }
+
+  console.log(cellId)
 
   const clickedCell = parseCellId(cellId)
 
   const updateAttacks = () => {
     game.players.forEach((player, index) => {
       player.gameboard.attackedCoordinates.forEach(coord => {
-        const cell = document.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
-        cell.classList.add(coord.hit? 'hit' : 'miss')
+        const cellElement = document.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
+        cellElement.classList.add(coord.hit? 'hit' : 'miss')
       })
     })
   }
@@ -168,21 +181,43 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     const shipId = e.dataTransfer.getData('text/plain')
     const draggedShipElement = document.getElementById(shipId)
 
-    const shipInstance = shipMap.get(shipId)
+    const draggedShipInstance = shipMap.get(shipId)
+
+    const orientation = draggedShipInstance.arrayOfCoordinates[1].x - draggedShipInstance.arrayOfCoordinates[0].x === 0
+      ? 'vertical'
+      : 'horizontal'
 
     const checkForAdjacentShips = (dropPoint) => {
-      console.log(shipInstance)
+      console.log(draggedShipInstance)
       return true
     }
     
     const notInSameCell = e.target.parentNode !== draggedShipElement.parentNode
     const noAdjacentShips = true // checkForAdjacentShips(e.target.id)
-
-    
     
     if (notInSameCell && noAdjacentShips) {
       // checkForAdjacentShips(e.target.id)
       e.target.appendChild(draggedShipElement)
+      // Update shipInstance's arrayOfCoordinates
+      for (let i = 0; i < draggedShipInstance.length; i += 1) {
+        if (i === 0) {
+          draggedShipInstance.arrayOfCoordinates[0] = {
+            x: parseCellId(e.target.id).coords.x,
+            y: parseCellId(e.target.id).coords.y
+          }
+        } else if (orientation === 'horizontal') {
+          draggedShipInstance.arrayOfCoordinates[i] = {
+            x: parseCellId(e.target.id).coords.x + i,
+            y: parseCellId(e.target.id).coords.y
+          }
+        } else {
+          draggedShipInstance.arrayOfCoordinates[i] = {
+            x: parseCellId(e.target.id).coords.x,
+            y: parseCellId(e.target.id).coords.y + i
+          }
+        }
+      }
+      console.log(draggedShipInstance.arrayOfCoordinates)
     }
   }
 
@@ -201,7 +236,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
       boardElement.appendChild(cellElement)
     }
   }
-  container.appendChild(boardElement)
+  containerElement.appendChild(boardElement)
   
   // Place ships
   const player = game.players[containerIndex]
@@ -214,7 +249,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     const startingCell = document.querySelector(`#board-${containerIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
     const shipElement = document.createElement('div')
     shipElement.className = 'ship'
-    shipElement.id = `#board-${containerIndex}-ship-${shipInstanceIndex}`
+    shipElement.id = `board-${containerIndex}-ship-${shipInstanceIndex}`
     shipMap.set(shipElement.id, shipInstance)
 
     // Drag-and-drop
@@ -229,14 +264,40 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     // Click to rotate
 
     shipElement.addEventListener('click', () => {
+      if (game.status === 'in progress' || game.status === 'ended') {
+        return
+      }
+
+      const pivotCell = parseCellId(shipElement.parentNode.id)
+
       if (orientation === 'horizontal') {
         shipElement.style.width = '2em'
         shipElement.style.height = `${shipInstance.length * 2}em`
+        
+        for (let i = 1; i < shipInstance.length; i += 1) {
+          shipInstance.arrayOfCoordinates[i] = {
+            x: pivotCell.coords.x,
+            y: pivotCell.coords.y + i
+          }
+        }
+        console.log(shipInstance.arrayOfCoordinates)
+
         orientation = 'vertical'
+        
       } else {
         shipElement.style.width = `${shipInstance.length * 2}em`
         shipElement.style.height = '2em'
+        
+        for (let i = 1; i < shipInstance.length; i += 1) {
+          shipInstance.arrayOfCoordinates[i] = {
+            x: pivotCell.coords.x + i,
+            y: pivotCell.coords.y
+          }
+        }
+        console.log(shipInstance.arrayOfCoordinates)
+ 
         orientation = 'horizontal'
+        
       }
     })
 
@@ -248,6 +309,6 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
       shipElement.style.width = '2em'
       shipElement.style.height = `${shipInstance.length * 2}em`
     }
-    startingCell.appendChild(newShip)
+    startingCell.appendChild(shipElement)
   })
 })
