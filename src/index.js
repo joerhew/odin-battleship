@@ -9,7 +9,7 @@ const shipMap = new Map()
 
 const message = document.querySelector('.message')
 const actionButton = document.querySelector('#start')
-const boardContainers = document.querySelectorAll('.board-container')
+const boardContainerElements = document.querySelectorAll('.board-container')
 
 // Create players, boards, and ships
 
@@ -76,19 +76,23 @@ const executeButtonAction = () => {
   }
 }
 
-const clickOnCell = (cellId) => {
-  if (game.status === 'start' || game.status === 'ended') {
-    return
-  }
-  
+const parseCellId = (cellId) => {
   const parts = cellId.split('-')
-  const clickedCell = {
+  return {
     playerIndex: parseInt(parts[1], 10),
     coords: {
       x: parseInt(parts[3], 10),
       y: parseInt(parts[4], 10)
     }
   }
+}
+
+const clickOnCell = (cellId) => {
+  if (game.status === 'start' || game.status === 'ended') {
+    return
+  }
+
+  const clickedCell = parseCellId(cellId)
 
   const updateAttacks = () => {
     game.players.forEach((player, index) => {
@@ -138,18 +142,18 @@ actionButton.addEventListener('click', () => {
 
 // Create boards
 
-boardContainers.forEach((container, containerIndex) => {
+boardContainerElements.forEach((containerElement, containerIndex) => {
   
   // Player name
   const playerName = document.createElement('h2')
   playerName.className = 'player-name'
   playerName.innerText = game.players[containerIndex].name
-  container.appendChild(playerName)
+  containerElement.appendChild(playerName)
 
   // Board
-  const board = document.createElement('div')
-  board.className = 'board'
-  board.id = `board-${containerIndex}`
+  const boardElement = document.createElement('div')
+  boardElement.className = 'board'
+  boardElement.id = `board-${containerIndex}`
   const boardSize = 10
 
   // Drag-and-drop
@@ -162,54 +166,56 @@ boardContainers.forEach((container, containerIndex) => {
     e.preventDefault()
     
     const shipId = e.dataTransfer.getData('text/plain')
-    const draggedShip = document.getElementById(shipId)
+    const draggedShipElement = document.getElementById(shipId)
 
-    const shipObject = shipMap.get(shipId)
+    const shipInstance = shipMap.get(shipId)
 
     const checkForAdjacentShips = (dropPoint) => {
+      console.log(shipInstance)
       return true
     }
     
-    const notInSameCell = e.target.parentNode !== draggedShip.parentNode
+    const notInSameCell = e.target.parentNode !== draggedShipElement.parentNode
     const noAdjacentShips = true // checkForAdjacentShips(e.target.id)
 
     
     
     if (notInSameCell && noAdjacentShips) {
-      e.target.appendChild(draggedShip)
+      // checkForAdjacentShips(e.target.id)
+      e.target.appendChild(draggedShipElement)
     }
   }
 
   for (let i = 0; i < boardSize; i += 1) {
     for (let j = 0; j < boardSize; j += 1) {
-      const cell = document.createElement('div')
-      cell.className = 'cell'
-      cell.id = `board-${containerIndex}-cell-${j}-${i}`
+      const cellElement = document.createElement('div')
+      cellElement.className = 'cell'
+      cellElement.id = `board-${containerIndex}-cell-${j}-${i}`
       
-      cell.ondrop = dropHandler
-      cell.ondragover = dragoverHandler
-      cell.addEventListener('click', (e) => {
+      cellElement.ondrop = dropHandler
+      cellElement.ondragover = dragoverHandler
+      cellElement.addEventListener('click', (e) => {
         clickOnCell(e.target.id)
       })
 
-      board.appendChild(cell)
+      boardElement.appendChild(cellElement)
     }
   }
-  container.appendChild(board)
+  container.appendChild(boardElement)
   
   // Place ships
   const player = game.players[containerIndex]
 
-  player.gameboard.ships.forEach((ship, shipIndex) => {
-    let orientation = ship.arrayOfCoordinates[1].x - ship.arrayOfCoordinates[0].x === 0
+  player.gameboard.ships.forEach((shipInstance, shipInstanceIndex) => {
+    let orientation = shipInstance.arrayOfCoordinates[1].x - shipInstance.arrayOfCoordinates[0].x === 0
       ? 'vertical'
       : 'horizontal'
 
-    const startingCell = document.querySelector(`#board-${containerIndex}-cell-${ship.arrayOfCoordinates[0].x}-${ship.arrayOfCoordinates[0].y}`)
-    const newShip = document.createElement('div')
-    newShip.className = 'ship'
-    newShip.id = `#board-${containerIndex}-ship-${shipIndex}`
-    shipMap.set(newShip.id, ship)
+    const startingCell = document.querySelector(`#board-${containerIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
+    const shipElement = document.createElement('div')
+    shipElement.className = 'ship'
+    shipElement.id = `#board-${containerIndex}-ship-${shipInstanceIndex}`
+    shipMap.set(shipElement.id, shipInstance)
 
     // Drag-and-drop
     const dragstartHandler = (e) => {
@@ -217,30 +223,30 @@ boardContainers.forEach((container, containerIndex) => {
       e.dataTransfer.dropEffect = 'move'
     }
     
-    newShip.draggable = 'true'
-    newShip.addEventListener('dragstart', dragstartHandler)
+    shipElement.draggable = 'true'
+    shipElement.addEventListener('dragstart', dragstartHandler)
 
     // Click to rotate
 
-    newShip.addEventListener('click', () => {
+    shipElement.addEventListener('click', () => {
       if (orientation === 'horizontal') {
-        newShip.style.width = '2em'
-        newShip.style.height = `${ship.length * 2}em`
+        shipElement.style.width = '2em'
+        shipElement.style.height = `${shipInstance.length * 2}em`
         orientation = 'vertical'
       } else {
-        newShip.style.width = `${ship.length * 2}em`
-        newShip.style.height = '2em'
+        shipElement.style.width = `${shipInstance.length * 2}em`
+        shipElement.style.height = '2em'
         orientation = 'horizontal'
       }
     })
 
     // Sizing of the ship based on length
     if (orientation === 'horizontal') {
-      newShip.style.width = `${ship.length * 2}em`
-      newShip.style.height = '2em'
+      shipElement.style.width = `${shipInstance.length * 2}em`
+      shipElement.style.height = '2em'
     } else {
-      newShip.style.width = `2em`
-      newShip.style.height = `${ship.length * 2}em`
+      shipElement.style.width = '2em'
+      shipElement.style.height = `${shipInstance.length * 2}em`
     }
     startingCell.appendChild(newShip)
   })
