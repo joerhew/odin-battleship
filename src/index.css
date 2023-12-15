@@ -34,7 +34,7 @@ button:hover {
 }
 
 .board-container {
-  padding: 2rem;
+  padding: 10%;
 }
 
 .player-name {
@@ -44,8 +44,6 @@ button:hover {
 .board {
   position: relative;
   display: grid;
-  width: 35vw;
-  height: 35vw;
   grid-template-columns: repeat(10, 2em);
   grid-template-rows: repeat(10, 2em);
 }

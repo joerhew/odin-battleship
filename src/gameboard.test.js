@@ -5,16 +5,17 @@ import Gameboard from "./gameboard"
 describe('Gameboard class', () => {
   let gameboard
   let ship
+  let coordinates
 
   beforeEach(() => {
     gameboard = new Gameboard()
 
-    const coordinates = [{ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }]
+    coordinates = [{ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }]
     ship = gameboard.placeShip(3, coordinates)
   })
   it('places a ship at specific coordinates by calling the ship constructor method', () => {
 
-    expect(gameboard.shipsCoordinates).toContainEqual({ ship, x: 1, y: 3 })
+    expect(ship.arrayOfCoordinates).toEqual(coordinates)
   })
 
   it(`receives an attack; if it's a hit, then records a hit for the ship and on the gameboard`, () => {
@@ -38,13 +39,12 @@ describe('Gameboard class', () => {
   })
 
   it('reports whether or not all of the ships on the board have been sunk', () => {
-    let isGameOver
     const ArrayOfAttackCoordinates = [{ x: 1, y: 2 }, { x: 1, y: 3 }, { x: 1, y: 4 }]
     ArrayOfAttackCoordinates.forEach(coords => {
-      isGameOver = gameboard.receiveAttack(coords)
+      gameboard.receiveAttack(coords)
     })
 
     expect(ship.hits).toBe(3)
-    expect(isGameOver).toBe(true)
+    expect(gameboard.areAllShipsHit()).toBe(true)
   })
 })

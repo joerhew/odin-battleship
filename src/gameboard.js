@@ -1,5 +1,7 @@
 import Ship from './ship'
 
+
+
 export default class Gameboard {
   constructor() {
     this.length = 10
@@ -11,6 +13,7 @@ export default class Gameboard {
   placeShip(length, arrayOfCoordinates) {
     const ship = new Ship(length)
     ship.arrayOfCoordinates = arrayOfCoordinates
+    ship.assignOrientation()
     this.ships.push(ship)
 
     return ship

@@ -3,11 +3,12 @@
 import Controller from './controller'
 import Ship from './ship'
 
-describe.only('Controller class', () => {
+describe('Controller class', () => {
   let gameController
 
   beforeEach(() => {
     gameController = new Controller(['Joe', 'Bot'])
+    gameController.start()
   })
 
   it('switches turns between players', () => {
@@ -31,7 +32,8 @@ describe.only('Controller class', () => {
   })
 
   it('declares a winner when the game ends', () => {
-    const msg = gameController.endGame()
+    gameController.endGame()
+    const msg = gameController.currentMessage
     expect(msg).toContain(gameController.whoseTurn.name)
   })
 })
