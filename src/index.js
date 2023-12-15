@@ -183,10 +183,6 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
 
     const draggedShipInstance = shipMap.get(shipId)
 
-    const orientation = draggedShipInstance.arrayOfCoordinates[1].x - draggedShipInstance.arrayOfCoordinates[0].x === 0
-      ? 'vertical'
-      : 'horizontal'
-
     const checkForAdjacentShips = (dropPoint) => {
       console.log(draggedShipInstance)
       return true
@@ -205,7 +201,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
             x: parseCellId(e.target.id).coords.x,
             y: parseCellId(e.target.id).coords.y
           }
-        } else if (orientation === 'horizontal') {
+        } else if (draggedShipInstance.orientation === 'horizontal') {
           draggedShipInstance.arrayOfCoordinates[i] = {
             x: parseCellId(e.target.id).coords.x + i,
             y: parseCellId(e.target.id).coords.y
@@ -242,10 +238,6 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
   const player = game.players[containerIndex]
 
   player.gameboard.ships.forEach((shipInstance, shipInstanceIndex) => {
-    let orientation = shipInstance.arrayOfCoordinates[1].x - shipInstance.arrayOfCoordinates[0].x === 0
-      ? 'vertical'
-      : 'horizontal'
-
     const startingCell = document.querySelector(`#board-${containerIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
     const shipElement = document.createElement('div')
     shipElement.className = 'ship'
@@ -270,7 +262,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
 
       const pivotCell = parseCellId(shipElement.parentNode.id)
 
-      if (orientation === 'horizontal') {
+      if (shipInstance.orientation === 'horizontal') {
         shipElement.style.width = '2em'
         shipElement.style.height = `${shipInstance.length * 2}em`
         
@@ -282,9 +274,9 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
         }
         console.log(shipInstance.arrayOfCoordinates)
 
-        orientation = 'vertical'
+        shipInstance.orientation = 'vertical'
         
-      } else {
+      } else if (shipInstance.orientation === 'vertical') {
         shipElement.style.width = `${shipInstance.length * 2}em`
         shipElement.style.height = '2em'
         
@@ -296,13 +288,13 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
         }
         console.log(shipInstance.arrayOfCoordinates)
  
-        orientation = 'horizontal'
+        shipInstance.orientation = 'horizontal'
         
       }
     })
 
     // Sizing of the ship based on length
-    if (orientation === 'horizontal') {
+    if (shipInstance.orientation === 'horizontal') {
       shipElement.style.width = `${shipInstance.length * 2}em`
       shipElement.style.height = '2em'
     } else {
