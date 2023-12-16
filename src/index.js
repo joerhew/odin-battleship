@@ -5,6 +5,7 @@ import Controller from "./controller"
 let game
 const shipMap = new Map()
 const BOARD_LENGTH = 10
+const CELL_SIZE = '2em'
 
 // Query selectors
 
@@ -81,6 +82,16 @@ const parseCellId = (cellId) => {
       y: parseInt(parts[4], 10)
     }
   }
+}
+
+const setShipElementSize = (shipElement, width, height) => {
+  shipElement.style.width = width
+  shipElement.style.height = height
+}
+
+const multiplyEm = (emValue, multiplier) => {
+  const numericPart = parseFloat(emValue)
+  return `${numericPart * multiplier}em`
 }
 
 const clickOnCell = (elementId) => {
@@ -214,6 +225,13 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     shipElement.id = shipInstance.uuid
     shipMap.set(shipElement.id, shipInstance)
 
+    // Sizing of the ship based on length
+    if (shipInstance.orientation === 'horizontal') {
+      setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
+    } else {
+      setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
+    }
+
     // Drag-and-drop
     const dragstartHandler = (e) => {
       e.dataTransfer.setData('text/plain', e.target.id)
@@ -224,35 +242,22 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     shipElement.addEventListener('dragstart', dragstartHandler)
 
     // Click to rotate
-
     shipElement.addEventListener('click', () => {
-      if (game.status === 'in progress' || game.status === 'ended') {
+      if (game.getStatus() !== 'start') {
         return
       }
 
       if (shipInstance.orientation === 'horizontal') {
-        shipElement.style.width = '2em'
-        shipElement.style.height = `${shipInstance.length * 2}em`
-        
+        setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
         game.rotateShip(containerIndex, shipInstance.uuid)
         
       } else if (shipInstance.orientation === 'vertical') {
-        shipElement.style.width = `${shipInstance.length * 2}em`
-        shipElement.style.height = '2em'
-        
+        setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
         game.rotateShip(containerIndex, shipInstance.uuid)
         
       }
     })
 
-    // Sizing of the ship based on length
-    if (shipInstance.orientation === 'horizontal') {
-      shipElement.style.width = `${shipInstance.length * 2}em`
-      shipElement.style.height = '2em'
-    } else {
-      shipElement.style.width = '2em'
-      shipElement.style.height = `${shipInstance.length * 2}em`
-    }
     startingCell.appendChild(shipElement)
   })
 })
