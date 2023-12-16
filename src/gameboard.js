@@ -43,7 +43,7 @@ export default class Gameboard {
       hit: Boolean(match)
     }
   
-    if (match) match.ship.hits += 1
+    if (match) match.ship.receiveHit()
     this.attackedCoordinates.push(result)
   
     return result

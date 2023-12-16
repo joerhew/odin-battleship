@@ -57,7 +57,7 @@ export default class Controller {
     const randomPlayer = this.players[Math.round(Math.random())]
     this.setWhoseTurn(randomPlayer)
     
-    const message = messages(this.getWhoseTurn()).turn
+    const message = messages(this.getWhoseTurn(),'','').turn
     this.setMessage(message)
   }
 

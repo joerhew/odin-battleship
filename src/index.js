@@ -15,7 +15,7 @@ const boardContainerElements = document.querySelectorAll('.board-container')
 // Create players, boards, and ships
 
 const updateMessage = () => {
-  message.innerText = game.currentMessage
+  message.innerText = game.message
 }
 
 const init = () => {
@@ -235,7 +235,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     const startingCell = document.querySelector(`#board-${containerIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
     const shipElement = document.createElement('div')
     shipElement.className = 'ship'
-    shipElement.id = `board-${containerIndex}-ship-${shipInstanceIndex}`
+    shipElement.id = shipInstance.uuid
     shipMap.set(shipElement.id, shipInstance)
 
     // Drag-and-drop
@@ -253,7 +253,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
       if (game.status === 'in progress' || game.status === 'ended') {
         return
       }
-      
+
       if (shipInstance.orientation === 'horizontal') {
         shipElement.style.width = '2em'
         shipElement.style.height = `${shipInstance.length * 2}em`

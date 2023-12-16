@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid'
 
 export default class Ship {
   constructor(length) {
-    this.uuid = uuid()
+    this.uuid = `ship-${uuid()}`
     this.length = length
     this.arrayOfCoordinates = []
     this.hits = 0
@@ -46,7 +46,7 @@ export default class Ship {
     }
   }
 
-  hit() {
+  receiveHit() {
     this.hits += 1
     return this.hits
   }
