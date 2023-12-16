@@ -11,6 +11,10 @@ export default class Player {
     this.gameboard.rotateShip(shipUuid)
   }
 
+  moveShip(shipUuid) {
+    this.gameboard.moveShip(shipUuid)
+  }
+
   assignBoard(gameboard) {
     this.gameboard = gameboard
   }

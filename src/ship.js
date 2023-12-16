@@ -46,6 +46,29 @@ export default class Ship {
     }
   }
 
+  move(newPivotCellCoords) {
+    const newPivotCell = newPivotCellCoords
+
+    for (let i = 0; i < this.length; i += 1) {
+      if (i === 0) {
+        this.arrayOfCoordinates[0] = {
+          x: newPivotCell.x,
+          y: newPivotCell.y
+        }
+      } else if (this.orientation === 'horizontal') {
+        this.arrayOfCoordinates[i] = {
+          x: newPivotCell.x + i,
+          y: newPivotCell.y
+        }
+      } else {
+        this.arrayOfCoordinates[i] = {
+          x: newPivotCell.x,
+          y: newPivotCell.y + i
+        }
+      }
+    }
+  }
+
   receiveHit() {
     this.hits += 1
     return this.hits

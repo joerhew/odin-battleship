@@ -107,6 +107,13 @@ export default class Controller {
     }
   }
 
+  moveShip(playerIndex, shipUuid) {
+    const player = this.players[playerIndex]
+    if (player) {
+      player.moveShip(shipUuid)
+    }
+  }
+
   attackOwnBoard() {
     const message = messages().errors.attacksOwnBoard
     this.setMessage(message)

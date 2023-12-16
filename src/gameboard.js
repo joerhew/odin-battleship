@@ -24,6 +24,14 @@ export default class Gameboard {
     }
   }
 
+  moveShip(shipUuid, newPivotCellCoords) {
+    // Need logic for checking adjacent cells aren't blocked
+    const ship = this.ships.find(s => s.uuid === shipUuid)
+    if (ship) {
+      ship.move(newPivotCellCoords)
+    }
+  }
+
   receiveAttack(attackedCoordinates) {
     let match = null;
 

@@ -98,8 +98,6 @@ const clickOnCell = (elementId) => {
     cellId = clickedElement.id
   }
 
-  console.log(cellId)
-
   const clickedCell = parseCellId(cellId)
 
   const updateAttacks = () => {
@@ -173,42 +171,20 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     e.preventDefault()
     
     const shipId = e.dataTransfer.getData('text/plain')
+    const draggedShipInstance = shipMap.get(shipId)
     const draggedShipElement = document.getElementById(shipId)
 
-    const draggedShipInstance = shipMap.get(shipId)
+    if (e.target.parentNode === draggedShipElement.parentNode) {
+      return
+    }
+    
+    const newPivotCellCoords = {
+      x: parseCellId(e.target.id).coords.x,
+      y: parseCellId(e.target.id).coords.y,
+    }
 
-    const checkForAdjacentShips = (dropPoint) => {
-      console.log(draggedShipInstance)
-      return true
-    }
-    
-    const notInSameCell = e.target.parentNode !== draggedShipElement.parentNode
-    const noAdjacentShips = true // checkForAdjacentShips(e.target.id)
-    
-    if (notInSameCell && noAdjacentShips) {
-      // checkForAdjacentShips(e.target.id)
-      e.target.appendChild(draggedShipElement)
-      // Update shipInstance's arrayOfCoordinates
-      for (let i = 0; i < draggedShipInstance.length; i += 1) {
-        if (i === 0) {
-          draggedShipInstance.arrayOfCoordinates[0] = {
-            x: parseCellId(e.target.id).coords.x,
-            y: parseCellId(e.target.id).coords.y
-          }
-        } else if (draggedShipInstance.orientation === 'horizontal') {
-          draggedShipInstance.arrayOfCoordinates[i] = {
-            x: parseCellId(e.target.id).coords.x + i,
-            y: parseCellId(e.target.id).coords.y
-          }
-        } else {
-          draggedShipInstance.arrayOfCoordinates[i] = {
-            x: parseCellId(e.target.id).coords.x,
-            y: parseCellId(e.target.id).coords.y + i
-          }
-        }
-      }
-      console.log(draggedShipInstance.arrayOfCoordinates)
-    }
+    e.target.appendChild(draggedShipElement)
+    game.moveShip(draggedShipInstance.uuid, newPivotCellCoords)
   }
 
   for (let i = 0; i < BOARD_LENGTH; i += 1) {
@@ -231,7 +207,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
   // Place ships
   const player = game.players[containerIndex]
 
-  player.gameboard.ships.forEach((shipInstance, shipInstanceIndex) => {
+  player.gameboard.ships.forEach((shipInstance) => {
     const startingCell = document.querySelector(`#board-${containerIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
     const shipElement = document.createElement('div')
     shipElement.className = 'ship'
