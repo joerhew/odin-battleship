@@ -1,7 +1,5 @@
 import Ship from './ship'
 
-
-
 export default class Gameboard {
   constructor() {
     this.length = 10
@@ -13,10 +11,17 @@ export default class Gameboard {
   placeShip(length, arrayOfCoordinates) {
     const ship = new Ship(length)
     ship.arrayOfCoordinates = arrayOfCoordinates
-    ship.assignOrientation()
+    ship.setOrientation()
     this.ships.push(ship)
 
     return ship
+  }
+
+  rotateShip(shipUuid) {
+    const ship = this.ships.find(s => s.uuid === shipUuid)
+    if (ship) {
+      ship.rotate()
+    }
   }
 
   receiveAttack(attackedCoordinates) {

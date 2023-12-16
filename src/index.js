@@ -4,6 +4,7 @@ import Controller from "./controller"
 
 let game
 const shipMap = new Map()
+const BOARD_LENGTH = 10
 
 // Query selectors
 
@@ -62,16 +63,11 @@ const resetGame = () => {
 
 const executeButtonAction = () => {
   switch (game.status) {
-    case 'in progress':
-      resetGame()
-      break
     case 'start':
       startGame()
       break
-    case 'ended':
-      resetGame()
-      break
     default:
+      resetGame()
       break
   }
 }
@@ -88,10 +84,9 @@ const parseCellId = (cellId) => {
 }
 
 const clickOnCell = (elementId) => {
-  if (game.status === 'start' || game.status === 'ended') {
+  if (game.getStatus() !== 'in progress') {
     return
   }
-  
   
   const clickedElement = document.querySelector(`#${elementId}`)
   
@@ -142,7 +137,7 @@ const clickOnCell = (elementId) => {
   updateMessage()
 
   // Check if the game has ended after the attack
-  if (game.status === 'ended') {
+  if (game.getStatus() === 'ended') {
     updateButtonText('Restart')
   }
 }
@@ -167,7 +162,6 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
   const boardElement = document.createElement('div')
   boardElement.className = 'board'
   boardElement.id = `board-${containerIndex}`
-  const boardSize = 10
 
   // Drag-and-drop
   const dragoverHandler = (e) => {
@@ -217,8 +211,8 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     }
   }
 
-  for (let i = 0; i < boardSize; i += 1) {
-    for (let j = 0; j < boardSize; j += 1) {
+  for (let i = 0; i < BOARD_LENGTH; i += 1) {
+    for (let j = 0; j < BOARD_LENGTH; j += 1) {
       const cellElement = document.createElement('div')
       cellElement.className = 'cell'
       cellElement.id = `board-${containerIndex}-cell-${j}-${i}`
@@ -259,36 +253,18 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
       if (game.status === 'in progress' || game.status === 'ended') {
         return
       }
-
-      const pivotCell = parseCellId(shipElement.parentNode.id)
-
+      
       if (shipInstance.orientation === 'horizontal') {
         shipElement.style.width = '2em'
         shipElement.style.height = `${shipInstance.length * 2}em`
         
-        for (let i = 1; i < shipInstance.length; i += 1) {
-          shipInstance.arrayOfCoordinates[i] = {
-            x: pivotCell.coords.x,
-            y: pivotCell.coords.y + i
-          }
-        }
-        console.log(shipInstance.arrayOfCoordinates)
-
-        shipInstance.orientation = 'vertical'
+        game.rotateShip(containerIndex, shipInstance.uuid)
         
       } else if (shipInstance.orientation === 'vertical') {
         shipElement.style.width = `${shipInstance.length * 2}em`
         shipElement.style.height = '2em'
         
-        for (let i = 1; i < shipInstance.length; i += 1) {
-          shipInstance.arrayOfCoordinates[i] = {
-            x: pivotCell.coords.x + i,
-            y: pivotCell.coords.y
-          }
-        }
-        console.log(shipInstance.arrayOfCoordinates)
- 
-        shipInstance.orientation = 'horizontal'
+        game.rotateShip(containerIndex, shipInstance.uuid)
         
       }
     })

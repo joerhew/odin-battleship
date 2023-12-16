@@ -1,5 +1,8 @@
+import { v4 as uuid } from 'uuid'
+
 export default class Ship {
   constructor(length) {
+    this.uuid = uuid()
     this.length = length
     this.arrayOfCoordinates = []
     this.hits = 0
@@ -7,7 +10,7 @@ export default class Ship {
     this.orientation = ''
   }
 
-  assignOrientation() {
+  setOrientation() {
     let orientation = '' // One-cell ships
     if (this.arrayOfCoordinates[1]) {
         orientation = this.arrayOfCoordinates[1].x - this.arrayOfCoordinates[0].x === 0
@@ -16,6 +19,31 @@ export default class Ship {
     }
     
     this.orientation = orientation
+  }
+
+  rotate() {
+    const pivotCell = this.arrayOfCoordinates[0]
+
+    if (this.orientation === 'horizontal') {
+      for (let i = 1; i < this.length; i += 1) {
+        this.arrayOfCoordinates[i] = {
+          x: pivotCell.x,
+          y: pivotCell.y + i
+        }
+      }
+
+      this.setOrientation()
+
+    } else if (this.orientation === 'vertical') {
+      for (let i = 1; i < this.length; i += 1) {
+        this.arrayOfCoordinates[i] = {
+          x: pivotCell.x + i,
+          y: pivotCell.y
+        }
+      }
+
+      this.setOrientation()
+    }
   }
 
   hit() {

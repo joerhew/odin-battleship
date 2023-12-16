@@ -25,19 +25,40 @@ export default class Controller {
     this.players = playerNames.map(name => new Player(name, name !== 'Bot'))
     this.whoseTurn = ''
     this.status = GameStatus.START
-    this.currentMessage = messages().start
+    this.message = messages().start
   }
 
-  updateCurrentMessage(message) {
-    this.currentMessage = message
+  getMessage() {
+    return this.message
+  }
+  
+  setMessage(message) {
+    this.message = message
+  }
+
+  getStatus() {
+    return this.status
+  }
+
+  setStatus(status) {
+    this.status = status
+  }
+
+  getWhoseTurn() {
+    return this.whoseTurn
+  }
+
+  setWhoseTurn(player) {
+    this.whoseTurn = player
   }
 
   start() {
-    this.status = GameStatus.IN_PROGRESS
-    this.whoseTurn = this.players[Math.round(Math.random())]
+    this.setStatus(GameStatus.IN_PROGRESS)
+    const randomPlayer = this.players[Math.round(Math.random())]
+    this.setWhoseTurn(randomPlayer)
     
-    const message = messages(this.whoseTurn).turn
-    this.updateCurrentMessage(message)
+    const message = messages(this.getWhoseTurn()).turn
+    this.setMessage(message)
   }
 
   switchTurns() {
@@ -47,7 +68,7 @@ export default class Controller {
     
     const message = messages(this.whoseTurn).turn
 
-    this.updateCurrentMessage(message)
+    this.setMessage(message)
   }
 
   makeMove(player, action) {
@@ -56,7 +77,7 @@ export default class Controller {
     switch (action.type) {
       case 'attack': {
         const initialMessage = messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).attack
-        this.updateCurrentMessage(initialMessage)
+        this.setMessage(initialMessage)
 
         const result = attackedPlayer.gameboard.receiveAttack(action.coordinates)
 
@@ -64,7 +85,7 @@ export default class Controller {
           ? messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).hit
           : messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).miss;
 
-        this.updateCurrentMessage(message)
+        this.setMessage(message)
         
         break
       }
@@ -79,19 +100,26 @@ export default class Controller {
     }
   }
 
+  rotateShip(playerIndex, shipUuid) {
+    const player = this.players[playerIndex]
+    if (player) {
+      player.rotateShip(shipUuid)
+    }
+  }
+
   attackOwnBoard() {
     const message = messages().errors.attacksOwnBoard
-    this.updateCurrentMessage(message)
+    this.setMessage(message)
   }
 
   attackAlreadyAttackedCell() {
     const message = messages().errors.attacksAlreadyAttackedCell
-    this.updateCurrentMessage(message)
+    this.setMessage(message)
   }
 
   endGame() {
     const message = `Game over! ${this.whoseTurn.name} wins the game!`
     this.status = GameStatus.ENDED
-    this.updateCurrentMessage(message)
+    this.setMessage(message)
   }
 }

@@ -30,6 +30,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "babel-jest": "^29.7.0"
+    "babel-jest": "^29.7.0",
+    "uuid": "^9.0.1"
   }
 }
