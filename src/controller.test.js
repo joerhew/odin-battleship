@@ -33,7 +33,7 @@ describe('Controller class', () => {
 
   it('declares a winner when the game ends', () => {
     gameController.endGame()
-    const msg = gameController.currentMessage
+    const msg = gameController.message
     expect(msg).toContain(gameController.whoseTurn.name)
   })
 })
