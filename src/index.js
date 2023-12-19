@@ -192,7 +192,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     }
 
     e.target.appendChild(draggedShipElement)
-    game.moveShip(game.players[playerIndex], draggedShipInstance.uuid, newPivotCellCoords)
+    game.moveShip(game.players[containerIndex], draggedShipInstance.uuid, newPivotCellCoords)
   }
 
   for (let i = 0; i < BOARD_LENGTH; i += 1) {

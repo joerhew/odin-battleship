@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1702997443981" clover="3.2.0">
-  <project timestamp="1702997443981" name="All files">
+<coverage generated="1702997538744" clover="3.2.0">
+  <project timestamp="1702997538744" name="All files">
     <metrics statements="107" coveredstatements="106" conditionals="35" coveredconditionals="27" methods="39" coveredmethods="39" elements="181" coveredelements="172" complexity="0" loc="107" ncloc="107" packages="1" files="4" classes="4"/>
     <file name="controller.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/controller.js">
       <metrics statements="42" coveredstatements="41" conditionals="13" coveredconditionals="8" methods="18" coveredmethods="18"/>

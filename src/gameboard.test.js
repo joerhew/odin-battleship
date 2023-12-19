@@ -19,7 +19,7 @@ describe('Gameboard class', () => {
       rotate: jest.fn(),
       move: jest.fn(),
       receiveHit: jest.fn()
-    };
+    }
     gameboard.ships.push(ship)
   })
   it('places a ship at specific coordinates by calling the ship constructor method', () => {
