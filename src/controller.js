@@ -71,27 +71,20 @@ export default class Controller {
     this.setMessage(message)
   }
 
-  makeMove(player, action) {
+  makeMove(player, coordinates) {
     const attackedPlayer = this.players.find(p => p !== player)
 
-    switch (action.type) {
-      case 'attack': {
-        const initialMessage = messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).attack
-        this.setMessage(initialMessage)
+    
+    const initialMessage = messages(this.whoseTurn, coordinates.x, coordinates.y).attack
+    this.setMessage(initialMessage)
 
-        const result = attackedPlayer.gameboard.receiveAttack(action.coordinates)
+    const result = attackedPlayer.gameboard.receiveAttack(coordinates)
 
-        const message = result.hit 
-          ? messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).hit
-          : messages(this.whoseTurn, action.coordinates.x, action.coordinates.y).miss;
+    const message = result.hit 
+      ? messages(this.whoseTurn, coordinates.x, coordinates.y).hit
+      : messages(this.whoseTurn, coordinates.x, coordinates.y).miss;
 
-        this.setMessage(message)
-        
-        break
-      }
-      default:
-        break
-    }
+    this.setMessage(message)
 
     if (attackedPlayer.gameboard.areAllShipsHit()) {
       this.endGame()
@@ -107,10 +100,10 @@ export default class Controller {
     }
   }
 
-  moveShip(playerIndex, shipUuid) {
+  moveShip(playerIndex, shipUuid, newPivotCellCoords) {
     const player = this.players[playerIndex]
     if (player) {
-      player.moveShip(shipUuid)
+      player.moveShip(shipUuid, newPivotCellCoords)
     }
   }
 

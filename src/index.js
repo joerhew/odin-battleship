@@ -137,10 +137,7 @@ const clickOnCell = (elementId) => {
     return
   }
 
-  game.makeMove(game.whoseTurn, {
-    type: 'attack',
-    coordinates: clickedCell.coords
-  })
+  game.makeMove(game.whoseTurn, clickedCell.coords)
 
   updateAttacks()
   updateMessage()
@@ -195,7 +192,7 @@ boardContainerElements.forEach((containerElement, containerIndex) => {
     }
 
     e.target.appendChild(draggedShipElement)
-    game.moveShip(draggedShipInstance.uuid, newPivotCellCoords)
+    game.moveShip(game.players[playerIndex], draggedShipInstance.uuid, newPivotCellCoords)
   }
 
   for (let i = 0; i < BOARD_LENGTH; i += 1) {
