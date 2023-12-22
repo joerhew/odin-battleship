@@ -3,7 +3,7 @@ import './index.css'
 import Controller from "./controller"
 
 let game
-const shipMap = new Map()
+const shipMap = new Map() // need to remove
 const BOARD_LENGTH = 10
 const CELL_SIZE = '2em'
 
@@ -15,7 +15,7 @@ const boardContainerElements = document.querySelectorAll('.board-container')
 
 // Create players, boards, and ships
 
-const updateMessage = () => {
+const updateMessageElement = () => {
   message.innerText = game.message
 }
 
@@ -27,10 +27,10 @@ const init = () => {
   game.players[1].gameboard.placeShip(4, [{ x: 1, y: 1 }, { x: 2, y: 1 }, { x: 3, y: 1 }, { x: 4, y: 1 }])
   game.players[1].gameboard.placeShip(3, [{ x: 6, y: 1 }, { x: 6, y: 2 }, { x: 6, y: 3 }])
 
-  updateMessage()
+  createBoards()
+  generateShipsInDefaultPosition()
+  updateMessageElement()
 }
-
-init()
 
 // Functions
 
@@ -38,26 +38,29 @@ const updateButtonText = text => {
   actionButton.innerText = text
 }
 
-const clearBoards = () => {
-  const hits = document.querySelectorAll('.hit')
-  hits.forEach(hit => {
-    hit.classList.remove('hit')
-  })
+const removeBoards = () => {
+  const boards = document.querySelectorAll('.board')
+  const playerNames = document.querySelectorAll('.player-name')
+  boards.forEach(b => b.remove())
+  playerNames.forEach(pn => pn.remove())
+}
 
-  const misses = document.querySelectorAll('.miss')
-  misses.forEach(miss => {
-    miss.classList.remove('miss')
+const setShipsInGameMode = () => {
+  const pregameShipElements = document.querySelectorAll('.ship')
+  pregameShipElements.forEach((elem) => {
+    elem.remove()
   })
 }
 
 const startGame = () => {
   game.start()
+  setShipsInGameMode()
   updateButtonText('Reset')
-  updateMessage()
+  updateMessageElement() 
 }
 
 const resetGame = () => {
-  clearBoards()
+  removeBoards()
   init()
   updateButtonText('Start')
 }
@@ -122,7 +125,7 @@ const clickOnCell = (elementId) => {
 
   if (game.whoseTurn === game.players[clickedCell.playerIndex]) {
     game.attackOwnBoard()
-    updateMessage()
+    updateMessageElement()
     return
   }
 
@@ -133,14 +136,14 @@ const clickOnCell = (elementId) => {
 
   if (cellAlreadyAttacked) {
     game.attackAlreadyAttackedCell()
-    updateMessage()
+    updateMessageElement()
     return
   }
 
   game.makeMove(game.whoseTurn, clickedCell.coords)
 
   updateAttacks()
-  updateMessage()
+  updateMessageElement()
 
   // Check if the game has ended after the attack
   if (game.getStatus() === 'ended') {
@@ -155,106 +158,114 @@ actionButton.addEventListener('click', () => {
 })
 
 // Create boards
-
-boardContainerElements.forEach((containerElement, containerIndex) => {
+const createBoards = () => {
+  boardContainerElements.forEach((containerElement, containerIndex) => {
   
-  // Player name
-  const playerName = document.createElement('h2')
-  playerName.className = 'player-name'
-  playerName.innerText = game.players[containerIndex].name
-  containerElement.appendChild(playerName)
-
-  // Board
-  const boardElement = document.createElement('div')
-  boardElement.className = 'board'
-  boardElement.id = `board-${containerIndex}`
-
-  // Drag-and-drop
-  const dragoverHandler = (e) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-  }
-
-  const dropHandler = (e) => {
-    e.preventDefault()
-    
-    const shipId = e.dataTransfer.getData('text/plain')
-    const draggedShipInstance = shipMap.get(shipId)
-    const draggedShipElement = document.getElementById(shipId)
-
-    if (e.target.parentNode === draggedShipElement.parentNode) {
-      return
-    }
-    
-    const newPivotCellCoords = {
-      x: parseCellId(e.target.id).coords.x,
-      y: parseCellId(e.target.id).coords.y,
-    }
-
-    e.target.appendChild(draggedShipElement)
-    game.moveShip(game.players[containerIndex], draggedShipInstance.uuid, newPivotCellCoords)
-  }
-
-  for (let i = 0; i < BOARD_LENGTH; i += 1) {
-    for (let j = 0; j < BOARD_LENGTH; j += 1) {
-      const cellElement = document.createElement('div')
-      cellElement.className = 'cell'
-      cellElement.id = `board-${containerIndex}-cell-${j}-${i}`
-      
-      cellElement.ondrop = dropHandler
-      cellElement.ondragover = dragoverHandler
-      cellElement.addEventListener('click', (e) => {
-        clickOnCell(e.target.id)
-      })
-
-      boardElement.appendChild(cellElement)
-    }
-  }
-  containerElement.appendChild(boardElement)
+    // Player name
+    const playerName = document.createElement('h2')
+    playerName.className = 'player-name'
+    playerName.innerText = game.players[containerIndex].name
+    containerElement.appendChild(playerName)
   
-  // Place ships
-  const player = game.players[containerIndex]
-
-  player.gameboard.ships.forEach((shipInstance) => {
-    const startingCell = document.querySelector(`#board-${containerIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
-    const shipElement = document.createElement('div')
-    shipElement.className = 'ship'
-    shipElement.id = shipInstance.uuid
-    shipMap.set(shipElement.id, shipInstance)
-
-    // Sizing of the ship based on length
-    if (shipInstance.orientation === 'horizontal') {
-      setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
-    } else {
-      setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
-    }
-
+    // Board
+    const boardElement = document.createElement('div')
+    boardElement.className = 'board'
+    boardElement.id = `board-${containerIndex}`
+  
     // Drag-and-drop
-    const dragstartHandler = (e) => {
-      e.dataTransfer.setData('text/plain', e.target.id)
+    const dragoverHandler = (e) => {
+      e.preventDefault()
       e.dataTransfer.dropEffect = 'move'
     }
-    
-    shipElement.draggable = 'true'
-    shipElement.addEventListener('dragstart', dragstartHandler)
-
-    // Click to rotate
-    shipElement.addEventListener('click', () => {
-      if (game.getStatus() !== 'start') {
+  
+    const dropHandler = (e) => {
+      e.preventDefault()
+      
+      const shipId = e.dataTransfer.getData('text/plain')
+      const draggedShipInstance = shipMap.get(shipId) // Need to remove shipMap
+      const draggedShipElement = document.getElementById(shipId)
+  
+      if (e.target.parentNode === draggedShipElement.parentNode) {
         return
       }
-
-      if (shipInstance.orientation === 'horizontal') {
-        setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
-        game.rotateShip(containerIndex, shipInstance.uuid)
-        
-      } else if (shipInstance.orientation === 'vertical') {
-        setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
-        game.rotateShip(containerIndex, shipInstance.uuid)
-        
+      
+      const newPivotCellCoords = {
+        x: parseCellId(e.target.id).coords.x,
+        y: parseCellId(e.target.id).coords.y,
       }
-    })
-
-    startingCell.appendChild(shipElement)
+  
+      e.target.appendChild(draggedShipElement)
+      game.moveShip(game.players[containerIndex], draggedShipInstance.uuid, newPivotCellCoords)
+    }
+  
+    for (let i = 0; i < BOARD_LENGTH; i += 1) {
+      for (let j = 0; j < BOARD_LENGTH; j += 1) {
+        const cellElement = document.createElement('div')
+        cellElement.className = 'cell'
+        cellElement.id = `board-${containerIndex}-cell-${j}-${i}`
+        
+        cellElement.ondrop = dropHandler
+        cellElement.ondragover = dragoverHandler
+        cellElement.addEventListener('click', (e) => {
+          clickOnCell(e.target.id)
+        })
+  
+        boardElement.appendChild(cellElement)
+      }
+    }
+    containerElement.appendChild(boardElement)
+    
+    // Place ships
+    
   })
-})
+}
+
+
+const generateShipsInDefaultPosition = () => {
+  game.players.forEach((p, pIndex) => {
+    p.gameboard.ships.forEach((shipInstance) => {
+      const startingCell = document.querySelector(`#board-${pIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
+      const shipElement = document.createElement('div')
+      shipElement.className = 'ship'
+      shipElement.id = shipInstance.uuid
+      shipMap.set(shipElement.id, shipInstance) // need to remove
+  
+      // Sizing of the ship based on length
+      if (shipInstance.orientation === 'horizontal') {
+        setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
+      } else {
+        setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
+      }
+  
+      // Drag-and-drop
+      const dragstartHandler = (e) => {
+        e.dataTransfer.setData('text/plain', e.target.id)
+        e.dataTransfer.dropEffect = 'move'
+      }
+      
+      shipElement.draggable = 'true'
+      shipElement.addEventListener('dragstart', dragstartHandler)
+  
+      // Click to rotate
+      shipElement.addEventListener('click', () => {
+        if (game.getStatus() !== 'start') {
+          return
+        }
+  
+        if (shipInstance.orientation === 'horizontal') {
+          setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
+          game.rotateShip(playerIndex, shipInstance.uuid)
+          
+        } else if (shipInstance.orientation === 'vertical') {
+          setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
+          game.rotateShip(playerIndex, shipInstance.uuid)
+          
+        }
+      })
+  
+      startingCell.appendChild(shipElement)
+      })
+  })
+}
+
+init()
