@@ -52,9 +52,17 @@ button:hover {
   outline: 1px solid black;
 }
 
-.ship {
+.pregame-ship {
   background-color: burlywood;
   outline: 2px solid brown;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+.ship {
+  background-color: purple;
+  outline: 2px solid fuchsia;
   overflow: visible;
   position: relative;
   z-index: 1;

@@ -46,9 +46,18 @@ const removeBoards = () => {
 }
 
 const setShipsInGameMode = () => {
-  const pregameShipElements = document.querySelectorAll('.ship')
+  const pregameShipElements = document.querySelectorAll('.pregame-ship')
   pregameShipElements.forEach((elem) => {
     elem.remove()
+  })
+
+  game.players.forEach((player, playerIndex) => {
+    player.gameboard.ships.forEach(ship =>
+        ship.arrayOfCoordinates.forEach(setOfCoords => {
+          const shipCell = document.querySelector(`#board-${playerIndex}-cell-${setOfCoords.x}-${setOfCoords.y}`)
+          shipCell.classList.add('ship')
+        })
+    )
   })
 }
 
@@ -98,26 +107,19 @@ const multiplyEm = (emValue, multiplier) => {
 }
 
 const clickOnCell = (elementId) => {
+  console.log(elementId)
   if (game.getStatus() !== 'in progress') {
     return
   }
   
-  const clickedElement = document.querySelector(`#${elementId}`)
-  
-  let cellId
-  
-  if (clickedElement.classList.contains('ship')) {
-    cellId = clickedElement.parentNode.id
-  } else {
-    cellId = clickedElement.id
-  }
+  const cellId = elementId
+  const cellElement = document.querySelector(`#${elementId}`)
 
   const clickedCell = parseCellId(cellId)
 
   const updateAttacks = () => {
     game.players.forEach((player, index) => {
       player.gameboard.attackedCoordinates.forEach(coord => {
-        const cellElement = document.querySelector(`#board-${index}-cell-${coord.x}-${coord.y}`)
         cellElement.classList.add(coord.hit? 'hit' : 'miss')
       })
     })
@@ -153,9 +155,11 @@ const clickOnCell = (elementId) => {
 
 // Event listeners
 
-actionButton.addEventListener('click', () => {
-  executeButtonAction()
-})
+const addEventListenerToActionButton = () => {
+  actionButton.addEventListener('click', () => {
+    executeButtonAction()
+  })
+}
 
 // Create boards
 const createBoards = () => {
@@ -220,13 +224,12 @@ const createBoards = () => {
   })
 }
 
-
 const generateShipsInDefaultPosition = () => {
   game.players.forEach((p, pIndex) => {
     p.gameboard.ships.forEach((shipInstance) => {
       const startingCell = document.querySelector(`#board-${pIndex}-cell-${shipInstance.arrayOfCoordinates[0].x}-${shipInstance.arrayOfCoordinates[0].y}`)
       const shipElement = document.createElement('div')
-      shipElement.className = 'ship'
+      shipElement.className = 'pregame-ship'
       shipElement.id = shipInstance.uuid
       shipMap.set(shipElement.id, shipInstance) // need to remove
   
@@ -254,11 +257,11 @@ const generateShipsInDefaultPosition = () => {
   
         if (shipInstance.orientation === 'horizontal') {
           setShipElementSize(shipElement, CELL_SIZE, multiplyEm(CELL_SIZE, shipInstance.length))
-          game.rotateShip(playerIndex, shipInstance.uuid)
+          game.rotateShip(pIndex, shipInstance.uuid)
           
         } else if (shipInstance.orientation === 'vertical') {
           setShipElementSize(shipElement, multiplyEm(CELL_SIZE, shipInstance.length), CELL_SIZE)
-          game.rotateShip(playerIndex, shipInstance.uuid)
+          game.rotateShip(pIndex, shipInstance.uuid)
           
         }
       })
@@ -269,3 +272,4 @@ const generateShipsInDefaultPosition = () => {
 }
 
 init()
+addEventListenerToActionButton()
