@@ -102,9 +102,11 @@ export default class Controller {
 
   moveShip(playerIndex, shipUuid, newPivotCellCoords) {
     const player = this.players[playerIndex]
+    let movedShip
     if (player) {
-      player.moveShip(shipUuid, newPivotCellCoords)
+      movedShip = player.moveShip(shipUuid, newPivotCellCoords)
     }
+    return movedShip
   }
 
   attackOwnBoard() {

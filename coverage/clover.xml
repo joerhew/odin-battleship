@@ -1,6 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1703613428172" clover="3.2.0">
-  <project timestamp="1703613428172" name="All files">
-    <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0" elements="0" coveredelements="0" complexity="0" loc="0" ncloc="0" packages="0" files="0" classes="0"/>
+<coverage generated="1704211492847" clover="3.2.0">
+  <project timestamp="1704211492847" name="All files">
+    <metrics statements="112" coveredstatements="111" conditionals="35" coveredconditionals="27" methods="40" coveredmethods="40" elements="187" coveredelements="178" complexity="0" loc="112" ncloc="112" packages="1" files="4" classes="4"/>
+    <file name="controller.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/controller.js">
+      <metrics statements="43" coveredstatements="42" conditionals="13" coveredconditionals="8" methods="18" coveredmethods="18"/>
+      <line num="3" count="36" type="cond" truecount="3" falsecount="0"/>
+      <line num="17" count="1" type="stmt"/>
+      <line num="25" count="30" type="stmt"/>
+      <line num="26" count="15" type="stmt"/>
+      <line num="27" count="15" type="stmt"/>
+      <line num="28" count="15" type="stmt"/>
+      <line num="32" count="1" type="stmt"/>
+      <line num="36" count="23" type="stmt"/>
+      <line num="40" count="1" type="stmt"/>
+      <line num="44" count="16" type="stmt"/>
+      <line num="48" count="16" type="stmt"/>
+      <line num="52" count="16" type="stmt"/>
+      <line num="56" count="15" type="stmt"/>
+      <line num="57" count="15" type="stmt"/>
+      <line num="58" count="15" type="stmt"/>
+      <line num="60" count="15" type="stmt"/>
+      <line num="61" count="15" type="stmt"/>
+      <line num="65" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="69" count="2" type="stmt"/>
+      <line num="71" count="2" type="stmt"/>
+      <line num="75" count="2" type="stmt"/>
+      <line num="78" count="1" type="stmt"/>
+      <line num="79" count="1" type="stmt"/>
+      <line num="81" count="1" type="stmt"/>
+      <line num="83" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="87" count="1" type="stmt"/>
+      <line num="89" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="90" count="0" type="stmt"/>
+      <line num="92" count="1" type="stmt"/>
+      <line num="97" count="1" type="stmt"/>
+      <line num="98" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="99" count="1" type="stmt"/>
+      <line num="104" count="1" type="stmt"/>
+      <line num="106" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="107" count="1" type="stmt"/>
+      <line num="109" count="1" type="stmt"/>
+      <line num="113" count="1" type="stmt"/>
+      <line num="114" count="1" type="stmt"/>
+      <line num="118" count="1" type="stmt"/>
+      <line num="119" count="1" type="stmt"/>
+      <line num="123" count="1" type="stmt"/>
+      <line num="124" count="1" type="stmt"/>
+      <line num="125" count="1" type="stmt"/>
+    </file>
+    <file name="gameboard.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/gameboard.js">
+      <metrics statements="31" coveredstatements="31" conditionals="10" coveredconditionals="8" methods="12" coveredmethods="12"/>
+      <line num="5" count="39" type="stmt"/>
+      <line num="6" count="39" type="stmt"/>
+      <line num="7" count="39" type="stmt"/>
+      <line num="8" count="39" type="stmt"/>
+      <line num="12" count="4" type="stmt"/>
+      <line num="13" count="4" type="stmt"/>
+      <line num="14" count="4" type="stmt"/>
+      <line num="15" count="4" type="stmt"/>
+      <line num="17" count="4" type="stmt"/>
+      <line num="22" count="2" type="stmt"/>
+      <line num="23" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="24" count="2" type="stmt"/>
+      <line num="30" count="2" type="stmt"/>
+      <line num="31" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="32" count="2" type="stmt"/>
+      <line num="34" count="2" type="stmt"/>
+      <line num="38" count="6" type="stmt"/>
+      <line num="40" count="6" type="stmt"/>
+      <line num="41" count="6" type="stmt"/>
+      <line num="42" count="12" type="cond" truecount="2" falsecount="0"/>
+      <line num="45" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="46" count="4" type="stmt"/>
+      <line num="50" count="6" type="stmt"/>
+      <line num="56" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="57" count="6" type="stmt"/>
+      <line num="59" count="6" type="stmt"/>
+      <line num="63" count="4" type="stmt"/>
+      <line num="64" count="2" type="stmt"/>
+      <line num="65" count="2" type="stmt"/>
+      <line num="66" count="2" type="stmt"/>
+      <line num="69" count="2" type="stmt"/>
+    </file>
+    <file name="player.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/player.js">
+      <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <line num="5" count="33" type="stmt"/>
+      <line num="6" count="33" type="stmt"/>
+      <line num="7" count="33" type="stmt"/>
+      <line num="11" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="16" count="1" type="stmt"/>
+      <line num="18" count="1" type="stmt"/>
+    </file>
+    <file name="ship.js" path="/Users/joerhew/Documents/Odin/repos/odin-battleship/src/ship.js">
+      <metrics statements="31" coveredstatements="31" conditionals="12" coveredconditionals="11" methods="6" coveredmethods="6"/>
+      <line num="5" count="14" type="stmt"/>
+      <line num="6" count="14" type="stmt"/>
+      <line num="7" count="14" type="stmt"/>
+      <line num="8" count="14" type="stmt"/>
+      <line num="9" count="14" type="stmt"/>
+      <line num="10" count="14" type="stmt"/>
+      <line num="14" count="16" type="stmt"/>
+      <line num="15" count="16" type="cond" truecount="2" falsecount="0"/>
+      <line num="16" count="13" type="cond" truecount="2" falsecount="0"/>
+      <line num="21" count="16" type="stmt"/>
+      <line num="25" count="3" type="stmt"/>
+      <line num="27" count="3" type="cond" truecount="2" falsecount="0"/>
+      <line num="28" count="1" type="stmt"/>
+      <line num="29" count="1" type="stmt"/>
+      <line num="35" count="1" type="stmt"/>
+      <line num="37" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="38" count="2" type="stmt"/>
+      <line num="39" count="3" type="stmt"/>
+      <line num="45" count="2" type="stmt"/>
+      <line num="50" count="3" type="stmt"/>
+      <line num="52" count="3" type="stmt"/>
+      <line num="53" count="11" type="cond" truecount="2" falsecount="0"/>
+      <line num="54" count="3" type="stmt"/>
+      <line num="58" count="8" type="cond" truecount="2" falsecount="0"/>
+      <line num="59" count="3" type="stmt"/>
+      <line num="64" count="5" type="stmt"/>
+      <line num="71" count="3" type="stmt"/>
+      <line num="75" count="5" type="stmt"/>
+      <line num="76" count="5" type="stmt"/>
+      <line num="80" count="4" type="stmt"/>
+      <line num="81" count="4" type="stmt"/>
+    </file>
   </project>
 </coverage>

@@ -67,6 +67,8 @@ export default class Ship {
         }
       }
     }
+
+    return this
   }
 
   receiveHit() {

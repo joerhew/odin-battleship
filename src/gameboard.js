@@ -31,6 +31,7 @@ export default class Gameboard {
     if (ship) {
       ship.move(newPivotCellCoords)
     }
+    return ship
   }
 
   receiveAttack(attackedCoordinates) {

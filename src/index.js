@@ -52,11 +52,12 @@ const setShipsInGameMode = () => {
   })
 
   game.players.forEach((player, playerIndex) => {
-    player.gameboard.ships.forEach(ship =>
-        ship.arrayOfCoordinates.forEach(setOfCoords => {
+    player.gameboard.ships.forEach(ship => {
+      console.log(ship)
+      ship.arrayOfCoordinates.forEach(setOfCoords => {
           const shipCell = document.querySelector(`#board-${playerIndex}-cell-${setOfCoords.x}-${setOfCoords.y}`)
-          shipCell.classList.add('ship')
-        })
+          shipCell.classList.add('ship') 
+      })}
     )
   })
 }
@@ -199,7 +200,7 @@ const createBoards = () => {
       }
   
       e.target.appendChild(draggedShipElement)
-      game.moveShip(game.players[containerIndex], draggedShipInstance.uuid, newPivotCellCoords)
+      console.log(game.moveShip(containerIndex, draggedShipInstance.uuid, newPivotCellCoords))
     }
   
     for (let i = 0; i < BOARD_LENGTH; i += 1) {

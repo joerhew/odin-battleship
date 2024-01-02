@@ -13,5 +13,8 @@ export default class Player {
 
   moveShip(shipUuid, newPivotCellCoords) {
     this.gameboard.moveShip(shipUuid, newPivotCellCoords)
+    const movedShip = this.gameboard.ships.find(s => s.uuid === shipUuid)
+
+    return movedShip
   }
 }
