@@ -5,7 +5,7 @@ import Controller from "./controller"
 let game
 const shipMap = new Map() // need to remove
 const BOARD_LENGTH = 10
-const CELL_SIZE = '2em'
+const CELL_SIZE = '2rem'
 
 // Query selectors
 
@@ -53,7 +53,7 @@ const setShipsInGameMode = () => {
 
   game.players.forEach((player, playerIndex) => {
     player.gameboard.ships.forEach(ship => {
-      console.log(ship)
+      
       ship.arrayOfCoordinates.forEach(setOfCoords => {
           const shipCell = document.querySelector(`#board-${playerIndex}-cell-${setOfCoords.x}-${setOfCoords.y}`)
           shipCell.classList.add('ship') 
@@ -192,7 +192,8 @@ const createBoards = () => {
       }
   
       e.target.appendChild(draggedShipElement)
-      console.log(game.moveShip(containerIndex, draggedShipInstance.uuid, newPivotCellCoords))
+      game.moveShip(containerIndex, draggedShipInstance.uuid, newPivotCellCoords)
+      
     }
   
     for (let i = 0; i < BOARD_LENGTH; i += 1) {

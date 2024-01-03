@@ -1,7 +1,32 @@
+:root {
+  --cerulean: #0081A7;
+  --verdigris: #00AFB9;
+  --light-blue: #B1DDE6;
+  --cadet-gray: #8EB0B3;
+  --slate-gray: #737F8E;
+  --platinum: #D2D6DB;
+  --light-yellow: #FDFCDC;
+  --light-orange: #FED9B7;
+  --bittersweet: #F07167;
+  --display: 'Chakra Petch';
+  --sans: 'Nunito Sans';
+
+  font-family: var(--sans);
+}
+
+h1 {
+  font-family: var(--display);
+  font-weight: bold;
+  font-size: 3rem;
+}
+
 button {
   border: none;
   padding: 1rem;
-  font-size: 1rem;
+  font-size: 2rem;
+  border-radius: 0.5rem;
+  font-family: var(--display);
+  font-weight: bold;
 }
 
 button:hover {
@@ -9,7 +34,6 @@ button:hover {
 }
 
 #container {
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,17 +42,14 @@ button:hover {
 .row {
   display: flex;
   justify-content: center;
-  margin: 2rem;
 }
 
 .message {
-  border: 1px solid black;
   padding: 2rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .buttons {
-  border: 1px solid black;
   padding: 2rem;
   font-size: 2rem;
 }
@@ -41,39 +62,45 @@ button:hover {
   text-align: center;
 }
 
+.boards {
+  background-color: var(--light-blue);
+}
+
 .board {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(10, 2em);
-  grid-template-rows: repeat(10, 2em);
+  grid-template-columns: repeat(10, 2rem);
+  grid-template-rows: repeat(10, 2rem);
 }
 
 .cell {
-  outline: 1px solid black;
+  outline: 1px solid var(--verdigris);
+  border-radius: 0.6rem;
+  
 }
 
 .pregame-ship {
-  background-color: burlywood;
-  outline: 2px solid brown;
+  background-color: var(--platinum);
+  outline: 2px solid var(--slate-gray);
+  border-radius: 5px;
   overflow: visible;
   position: relative;
   z-index: 1;
 }
 
 .ship {
-  background-color: purple;
-  outline: 2px solid fuchsia;
+  background-color: var(--cerulean);
   overflow: visible;
   position: relative;
   z-index: 1;
 }
 
 .hit {
-  background-color: green;
-  outline: 2px solid green;
+  background-color: var(--bittersweet);
+  outline: 1px solid var(--light-orange);
 }
 
 .miss {
-  background-color: lightgray;
-  outline: 2px solid lightslategray;
+  background-color: var(--cadet-gray);
+  outline: 1px solid var(--slate-gray);
 }
