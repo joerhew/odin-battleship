@@ -108,22 +108,16 @@ const multiplyEm = (emValue, multiplier) => {
 }
 
 const clickOnCell = (elementId) => {
-  console.log(elementId)
+  
+  const cellElement = document.querySelector(`#${elementId}`)
+  const clickedCell = parseCellId(elementId)
+  const attackedPlayerIndex = (game.whoseTurn === game.players[0]) ? 1 : 0
+  const cellAlreadyAttacked = game.players[attackedPlayerIndex].gameboard.attackedCoordinates.some(coord => 
+    coord.x === clickedCell.coords.x && coord.y === clickedCell.coords.y
+  )
+  
   if (game.getStatus() !== 'in progress') {
     return
-  }
-  
-  const cellId = elementId
-  const cellElement = document.querySelector(`#${elementId}`)
-
-  const clickedCell = parseCellId(cellId)
-
-  const updateAttacks = () => {
-    game.players.forEach((player, index) => {
-      player.gameboard.attackedCoordinates.forEach(coord => {
-        cellElement.classList.add(coord.hit? 'hit' : 'miss')
-      })
-    })
   }
 
   if (game.whoseTurn === game.players[clickedCell.playerIndex]) {
@@ -132,20 +126,18 @@ const clickOnCell = (elementId) => {
     return
   }
 
-  const attackedPlayerIndex = (game.whoseTurn === game.players[0]) ? 1 : 0
-  const cellAlreadyAttacked = game.players[attackedPlayerIndex].gameboard.attackedCoordinates.some(coord => 
-    coord.x === clickedCell.coords.x && coord.y === clickedCell.coords.y
-  )
-
   if (cellAlreadyAttacked) {
     game.attackAlreadyAttackedCell()
     updateMessageElement()
     return
   }
 
-  game.makeMove(game.whoseTurn, clickedCell.coords)
+  const result = game.makeMove(game.whoseTurn, clickedCell.coords)
+  const updateAttack = () => {
+    cellElement.classList.add(result.hit? 'hit' : 'miss')
+  }
 
-  updateAttacks()
+  updateAttack()
   updateMessageElement()
 
   // Check if the game has ended after the attack

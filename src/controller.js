@@ -91,6 +91,8 @@ export default class Controller {
     } else {
       this.switchTurns()
     }
+
+    return result
   }
 
   rotateShip(playerIndex, shipUuid) {

@@ -35,7 +35,7 @@ export default class Gameboard {
   }
 
   receiveAttack(attackedCoordinates) {
-    let match = null;
+    let match = null
 
     this.ships.forEach(ship => {
       const found = ship.arrayOfCoordinates.find(coordinate =>
@@ -43,7 +43,7 @@ export default class Gameboard {
       )
 
       if (found) {
-        match = { ship, ...found };
+        match = { ship, ...found }
       }
     })
   
@@ -55,7 +55,7 @@ export default class Gameboard {
   
     if (match) match.ship.receiveHit()
     this.attackedCoordinates.push(result)
-  
+    
     return result
   }
 
